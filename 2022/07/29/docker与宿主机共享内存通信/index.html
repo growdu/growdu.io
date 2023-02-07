@@ -1,0 +1,709 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="growdu">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="docker与宿主机共享内存通信docker中的进程要与宿主机使用共享内存通信，需要在启动容器的时候指定“–ipc&#x3D;host”选项。然后再编写相应的共享内存的程序，一个跑在宿主机上，另一个跑在docker上面。 宿主机程序准备 shm_data.h  123456789101112#ifndef _SHMDATA_H_HEADER#define _SHMDATA_H_HEADER #de">
+<meta property="og:type" content="article">
+<meta property="og:title" content="docker与宿主机共享内存通信">
+<meta property="og:url" content="http://example.com/2022/07/29/docker%E4%B8%8E%E5%AE%BF%E4%B8%BB%E6%9C%BA%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98%E9%80%9A%E4%BF%A1/index.html">
+<meta property="og:site_name" content="growdu&#39;s blog">
+<meta property="og:description" content="docker与宿主机共享内存通信docker中的进程要与宿主机使用共享内存通信，需要在启动容器的时候指定“–ipc&#x3D;host”选项。然后再编写相应的共享内存的程序，一个跑在宿主机上，另一个跑在docker上面。 宿主机程序准备 shm_data.h  123456789101112#ifndef _SHMDATA_H_HEADER#define _SHMDATA_H_HEADER #de">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-07-29T14:18:40.000Z">
+<meta property="article:modified_time" content="2023-02-07T03:38:15.082Z">
+<meta property="article:author" content="growdu">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="docker">
+<meta property="article:tag" content="ipc">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>docker与宿主机共享内存通信 - growdu&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>growdu</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="docker与宿主机共享内存通信"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-07-29 22:18" pubdate>
+          2022年7月29日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          37 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">docker与宿主机共享内存通信</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="docker与宿主机共享内存通信"><a href="#docker与宿主机共享内存通信" class="headerlink" title="docker与宿主机共享内存通信"></a>docker与宿主机共享内存通信</h1><p>docker中的进程要与宿主机使用共享内存通信，需要在启动容器的时候指定<font color="red">“–ipc&#x3D;host”</font>选项。然后再编写相应的共享内存的程序，一个跑在宿主机上，另一个跑在docker上面。</p>
+<h2 id="宿主机程序准备"><a href="#宿主机程序准备" class="headerlink" title="宿主机程序准备"></a>宿主机程序准备</h2><ul>
+<li>shm_data.h</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">ifndef</span> _SHMDATA_H_HEADER</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> _SHMDATA_H_HEADER</span><br> <br><span class="hljs-meta">#<span class="hljs-keyword">define</span> TEXT_SZ 2048</span><br> <br><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">shared_use_st</span></span><br><span class="hljs-class">&#123;</span><br>    <span class="hljs-type">int</span> written; <span class="hljs-comment">// 作为一个标志，非0：表示可读，0：表示可写</span><br>    <span class="hljs-type">char</span> text[TEXT_SZ]; <span class="hljs-comment">// 记录写入 和 读取 的文本</span><br>&#125;;<br> <br><span class="hljs-meta">#<span class="hljs-keyword">endif</span></span><br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>shm_slave.c</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;unistd.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdlib.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;sys/shm.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;shmdata.h&quot;</span></span><br> <br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">(<span class="hljs-type">int</span> argc, <span class="hljs-type">char</span> **argv)</span><br>&#123;<br>    <span class="hljs-type">void</span> *shm = <span class="hljs-literal">NULL</span>;<br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">shared_use_st</span> *<span class="hljs-title">shared</span> =</span> <span class="hljs-literal">NULL</span>;<br>    <span class="hljs-type">char</span> buffer[BUFSIZ + <span class="hljs-number">1</span>]; <span class="hljs-comment">// 用于保存输入的文本</span><br>    <span class="hljs-type">int</span> shmid;<br> <br>    <span class="hljs-comment">// 创建共享内存</span><br>    shmid = shmget((<span class="hljs-type">key_t</span>)<span class="hljs-number">1234</span>, <span class="hljs-keyword">sizeof</span>(<span class="hljs-keyword">struct</span> shared_use_st), <span class="hljs-number">0666</span>|IPC_CREAT);<br>    <span class="hljs-keyword">if</span> (shmid == <span class="hljs-number">-1</span>)<br>    &#123;<br>        <span class="hljs-built_in">fprintf</span>(<span class="hljs-built_in">stderr</span>, <span class="hljs-string">&quot;shmget failed\n&quot;</span>);<br>        <span class="hljs-built_in">exit</span>(EXIT_FAILURE);<br>    &#125;<br> <br>    <span class="hljs-comment">// 将共享内存连接到当前的进程地址空间</span><br>    shm = shmat(shmid, (<span class="hljs-type">void</span> *)<span class="hljs-number">0</span>, <span class="hljs-number">0</span>);<br>    <span class="hljs-keyword">if</span> (shm == (<span class="hljs-type">void</span> *)<span class="hljs-number">-1</span>)<br>    &#123;<br>        <span class="hljs-built_in">fprintf</span>(<span class="hljs-built_in">stderr</span>, <span class="hljs-string">&quot;shmat failed\n&quot;</span>);<br>        <span class="hljs-built_in">exit</span>(EXIT_FAILURE);<br>    &#125;<br> <br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Memory attched at %X\n&quot;</span>, (<span class="hljs-type">int</span>)shm);<br> <br>    <span class="hljs-comment">// 设置共享内存</span><br>    shared = (<span class="hljs-keyword">struct</span> shared_use_st *)shm;<br>    <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>) <span class="hljs-comment">// 向共享内存中写数据</span><br>    &#123;<br>        <span class="hljs-comment">// 数据还没有被读取，则等待数据被读取，不能向共享内存中写入文本</span><br>        <span class="hljs-keyword">while</span> (shared-&gt;written == <span class="hljs-number">1</span>)<br>        &#123;<br>            sleep(<span class="hljs-number">1</span>);<br>            <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Waiting...\n&quot;</span>);<br>        &#125;<br> <br>        <span class="hljs-comment">// 向共享内存中写入数据</span><br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Enter some text: &quot;</span>);<br>        fgets(buffer, BUFSIZ, <span class="hljs-built_in">stdin</span>);<br>        <span class="hljs-built_in">strncpy</span>(shared-&gt;text, buffer, TEXT_SZ);<br> <br>        <span class="hljs-comment">// 写完数据，设置written使共享内存段可读</span><br>        shared-&gt;written = <span class="hljs-number">1</span>;<br> <br>        <span class="hljs-comment">// 输入了end，退出循环（程序）</span><br>        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">strncmp</span>(buffer, <span class="hljs-string">&quot;end&quot;</span>, <span class="hljs-number">3</span>) == <span class="hljs-number">0</span>)<br>        &#123;<br>            <span class="hljs-keyword">break</span>;<br>        &#125;<br>    &#125;<br> <br>    <span class="hljs-comment">// 把共享内存从当前进程中分离</span><br>    <span class="hljs-keyword">if</span> (shmdt(shm) == <span class="hljs-number">-1</span>)<br>    &#123;<br>        <span class="hljs-built_in">fprintf</span>(<span class="hljs-built_in">stderr</span>, <span class="hljs-string">&quot;shmdt failed\n&quot;</span>);<br>        <span class="hljs-built_in">exit</span>(EXIT_FAILURE);<br>    &#125;<br> <br>    sleep(<span class="hljs-number">2</span>);<br>    <span class="hljs-built_in">exit</span>(EXIT_SUCCESS);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>makefile</li>
+</ul>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-section">all:</span><br>	gcc -o shm_slave shm_slave.c<br><span class="hljs-section">clean:</span><br>	rm -rf shm_slave<br></code></pre></td></tr></table></figure>
+
+<h2 id="docker镜像准备"><a href="#docker镜像准备" class="headerlink" title="docker镜像准备"></a>docker镜像准备</h2><ul>
+<li>shm_data.h</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">ifndef</span> _SHMDATA_H_HEADER</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> _SHMDATA_H_HEADER</span><br> <br><span class="hljs-meta">#<span class="hljs-keyword">define</span> TEXT_SZ 2048</span><br> <br><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">shared_use_st</span></span><br><span class="hljs-class">&#123;</span><br>    <span class="hljs-type">int</span> written; <span class="hljs-comment">// 作为一个标志，非0：表示可读，0：表示可写</span><br>    <span class="hljs-type">char</span> text[TEXT_SZ]; <span class="hljs-comment">// 记录写入 和 读取 的文本</span><br>&#125;;<br> <br><span class="hljs-meta">#<span class="hljs-keyword">endif</span></span><br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>shm_master.c</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stddef.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;sys/shm.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdlib.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;unistd.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;shmdata.h&quot;</span></span><br> <br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">(<span class="hljs-type">int</span> argc, <span class="hljs-type">char</span> **argv)</span><br>&#123;<br>    <span class="hljs-type">void</span> *shm = <span class="hljs-literal">NULL</span>;<br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">shared_use_st</span> *<span class="hljs-title">shared</span>;</span> <span class="hljs-comment">// 指向shm</span><br>    <span class="hljs-type">int</span> shmid; <span class="hljs-comment">// 共享内存标识符</span><br>    <span class="hljs-comment">// 将内容写入到文件，可以通过查看文件确定共享内存是否成功</span><br>    FILE* file = fopen(<span class="hljs-string">&quot;t.txt&quot;</span>,<span class="hljs-string">&quot;w+&quot;</span>);<br> <br>    <span class="hljs-comment">// 创建共享内存</span><br>    shmid = shmget((<span class="hljs-type">key_t</span>)<span class="hljs-number">1234</span>, <span class="hljs-keyword">sizeof</span>(<span class="hljs-keyword">struct</span> shared_use_st), <span class="hljs-number">0666</span>|IPC_CREAT);<br>    <span class="hljs-keyword">if</span> (shmid == <span class="hljs-number">-1</span>)<br>    &#123;<br>        <span class="hljs-built_in">fprintf</span>(<span class="hljs-built_in">stderr</span>, <span class="hljs-string">&quot;shmat failed\n&quot;</span>);<br>        <span class="hljs-built_in">exit</span>(EXIT_FAILURE);<br>    &#125;<br> <br>    <span class="hljs-comment">// 将共享内存连接到当前进程的地址空间</span><br>    shm = shmat(shmid, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>);<br>    <span class="hljs-keyword">if</span> (shm == (<span class="hljs-type">void</span> *)<span class="hljs-number">-1</span>)<br>    &#123;<br>        <span class="hljs-built_in">fprintf</span>(<span class="hljs-built_in">stderr</span>, <span class="hljs-string">&quot;shmat failed\n&quot;</span>);<br>        <span class="hljs-built_in">exit</span>(EXIT_FAILURE);<br>    &#125;<br> <br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;\nMemory attached at %X\n&quot;</span>, (<span class="hljs-type">int</span>)shm);<br> <br>    <span class="hljs-comment">// 设置共享内存</span><br>    shared = (<span class="hljs-keyword">struct</span> shared_use_st*)shm; <span class="hljs-comment">// 注意：shm有点类似通过 malloc() 获取到的内存，所以这里需要做个 类型强制转换</span><br>    shared-&gt;written = <span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>) <span class="hljs-comment">// 读取共享内存中的数据</span><br>    &#123;<br>        <span class="hljs-comment">// 没有进程向内存写数据，有数据可读取</span><br>        <span class="hljs-keyword">if</span> (shared-&gt;written == <span class="hljs-number">1</span>)<br>        &#123;<br>            <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;You wrote: %s&quot;</span>, shared-&gt;text);<br>            <span class="hljs-built_in">fputs</span>(shared-&gt;text,file);<br>            fflush(file);<br>            sleep(<span class="hljs-number">1</span>);<br> <br>            <span class="hljs-comment">// 读取完数据，设置written使共享内存段可写</span><br>            shared-&gt;written = <span class="hljs-number">0</span>;<br> <br>            <span class="hljs-comment">// 输入了 end，退出循环（程序）</span><br>            <span class="hljs-keyword">if</span> (<span class="hljs-built_in">strncmp</span>(shared-&gt;text, <span class="hljs-string">&quot;end&quot;</span>, <span class="hljs-number">3</span>) == <span class="hljs-number">0</span>)<br>            &#123;<br>                <span class="hljs-keyword">break</span>;<br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">else</span> <span class="hljs-comment">// 有其他进程在写数据，不能读取数据</span><br>        &#123;<br>            sleep(<span class="hljs-number">1</span>);<br>        &#125;<br>    &#125;<br> <br>    <span class="hljs-comment">// 把共享内存从当前进程中分离</span><br>    <span class="hljs-keyword">if</span> (shmdt(shm) == <span class="hljs-number">-1</span>)<br>    &#123;<br>        <span class="hljs-built_in">fprintf</span>(<span class="hljs-built_in">stderr</span>, <span class="hljs-string">&quot;shmdt failed\n&quot;</span>);<br>        flcose(file);<br>        <span class="hljs-built_in">exit</span>(EXIT_FAILURE);<br>    &#125;<br> <br>    <span class="hljs-comment">// 删除共享内存</span><br>    <span class="hljs-keyword">if</span> (shmctl(shmid, IPC_RMID, <span class="hljs-number">0</span>) == <span class="hljs-number">-1</span>)<br>    &#123;<br>        <span class="hljs-built_in">fprintf</span>(<span class="hljs-built_in">stderr</span>, <span class="hljs-string">&quot;shmctl(IPC_RMID) failed\n&quot;</span>);<br>        fclose(file);<br>        <span class="hljs-built_in">exit</span>(EXIT_FAILURE);<br>    &#125;<br> 	flcose(file);<br>    <span class="hljs-built_in">exit</span>(EXIT_SUCCESS);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>makefile</li>
+</ul>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-section">all:</span><br>	gcc -o shm_master shm_master.c<br><span class="hljs-section">clean:</span><br>	rm -rf shm_master<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>Dockerfile</li>
+</ul>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs dockerfile"><span class="hljs-keyword">FROM</span> gcc:latest<br><br><span class="hljs-keyword">RUN</span><span class="language-bash">  <span class="hljs-built_in">mkdir</span> /usr/src/shm_test</span><br><br><span class="hljs-keyword">COPY</span><span class="language-bash"> shm_master.c shm_data.h makefile /usr/src/shm_test/</span><br><br><span class="hljs-keyword">WORKDIR</span><span class="language-bash"> /usr/src/shm_test</span><br><br><span class="hljs-keyword">RUN</span><span class="language-bash">  make</span><br><br><span class="hljs-keyword">CMD</span><span class="language-bash"> [<span class="hljs-string">&quot;./shm_master&quot;</span>]</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h2><p>运行时需要先下载docker，获取支持c语言编译运行的基础镜像，比如ubuntu、gcc等。这里使用gcc作为基础镜像。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shell">sudo apt install docker<br>sudo docker pull gcc<br><span class="hljs-meta prompt_"># </span><span class="language-bash">查看一下gcc的镜像是否拉取下来了</span><br>docker images<br></code></pre></td></tr></table></figure>
+
+<p>基础镜像有了后就可以基于基础镜像构建docker容器，基于上面所写的dockerfile，构建镜像：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">sudo docker build -t shm_master:v1 .<br><span class="hljs-meta prompt_"># </span><span class="language-bash">查看镜像是否创建成功</span><br>sudo docker images<br></code></pre></td></tr></table></figure>
+
+<p>镜像创建成功后就可以启动容器，启动时记得加上参数“–ipc”。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">fe9c3bd6d102是之前创建成功的镜像的<span class="hljs-built_in">id</span></span><br>sudo docker run -d --ipc=host --name master fe9c3bd6d102<br></code></pre></td></tr></table></figure>
+
+<p>成功启动容器后可以进入到容器内部查看通信相关信息。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">sudo docker exec -it master /bin/bash<br></code></pre></td></tr></table></figure>
+
+<h1 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h1><p><font color="red">需要特别说明的是:以下共享内存的代码均来自<a target="_blank" rel="noopener" href="https://www.cnblogs.com/52php/p/5861372.html">博客</a>,在此表示感谢。docker镜像创建参考<a target="_blank" rel="noopener" href="https://www.cnblogs.com/hailun1987/p/9697236.html">自北极之光的博客</a>。</font></p>
+<ol>
+<li><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/hailun1987/p/9697236.html">https://www.cnblogs.com/hailun1987/p/9697236.html</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/7eb7c7f62bf3">https://www.jianshu.com/p/7eb7c7f62bf3</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/52php/p/5861372.html">https://www.cnblogs.com/52php/p/5861372.html</a></p>
+</li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/docker/" class="category-chain-item">docker</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/linux/">#linux</a>
+      
+        <a href="/tags/docker/">#docker</a>
+      
+        <a href="/tags/ipc/">#ipc</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>docker与宿主机共享内存通信</div>
+      <div>http://example.com/2022/07/29/docker与宿主机共享内存通信/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>growdu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年7月29日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/02/07/hello-world/" title="Hello World">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Hello World</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/07/29/tcpdump%E6%8A%93%E5%8C%85/" title="tcpdump抓包">
+                        <span class="hidden-mobile">tcpdump抓包</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
