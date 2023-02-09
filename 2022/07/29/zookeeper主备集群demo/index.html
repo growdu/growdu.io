@@ -19,7 +19,7 @@
     <meta name="description" content="zookeeper主备集群demo使用zookeeper搭建主备集群，要求实现如下功能：  有且只有一个节点作为master，履行master的职责，在例子中是注册调度器； 其他实例作为slave，不提供调度功能，但是在master节点挂掉之后，可以重新进行选主调度。  kazoo搭建好zookeeper后，需要使用zookeeper 客户端来连接zookeeper，并在zookeeper中写入相">
 <meta property="og:type" content="article">
 <meta property="og:title" content="zookeeper主备集群demo">
-<meta property="og:url" content="https://growdu.gitee.io/growdu.io/2022/07/29/zookeeper%E4%B8%BB%E5%A4%87%E9%9B%86%E7%BE%A4demo/index.html">
+<meta property="og:url" content="http://growdu.online/growdu.io/2022/07/29/zookeeper%E4%B8%BB%E5%A4%87%E9%9B%86%E7%BE%A4demo/index.html">
 <meta property="og:site_name" content="growdu&#39;s blog">
 <meta property="og:description" content="zookeeper主备集群demo使用zookeeper搭建主备集群，要求实现如下功能：  有且只有一个节点作为master，履行master的职责，在例子中是注册调度器； 其他实例作为slave，不提供调度功能，但是在master节点挂掉之后，可以重新进行选主调度。  kazoo搭建好zookeeper后，需要使用zookeeper 客户端来连接zookeeper，并在zookeeper中写入相">
 <meta property="og:locale" content="zh_CN">
@@ -71,7 +71,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"growdu.gitee.io","root":"/growdu.io/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/growdu.io/local-search.xml"};
+    var CONFIG = {"hostname":"growdu.online","root":"/growdu.io/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/growdu.io/local-search.xml"};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -433,7 +433,7 @@
   <div class="license-box my-3">
     <div class="license-title">
       <div>zookeeper主备集群demo</div>
-      <div>https://growdu.gitee.io/growdu.io/2022/07/29/zookeeper主备集群demo/</div>
+      <div>http://growdu.online/growdu.io/2022/07/29/zookeeper主备集群demo/</div>
     </div>
     <div class="license-meta">
       

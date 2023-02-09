@@ -19,7 +19,7 @@
     <meta name="description" content="数据库数据完整性问题（块折断）数据库保证数据库完整性（解决块折断问题）当前主要有如下三种方式：  操作日志加double write机制（mysql采用该机制）;  操作日志加full page write机制（postgresql同时采用这两种机制）；  混合方式，既支持操作日志加double write，又支持操作日志加full page write（openguass采用该机制）；   基本">
 <meta property="og:type" content="article">
 <meta property="og:title" content="数据库数据完整性问题（块折断）">
-<meta property="og:url" content="https://growdu.gitee.io/growdu.io/2022/07/29/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%95%B0%E6%8D%AE%E5%AE%8C%E6%95%B4%E6%80%A7%E9%97%AE%E9%A2%98%EF%BC%88%E5%9D%97%E6%8A%98%E6%96%AD%EF%BC%89/index.html">
+<meta property="og:url" content="http://growdu.online/growdu.io/2022/07/29/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%95%B0%E6%8D%AE%E5%AE%8C%E6%95%B4%E6%80%A7%E9%97%AE%E9%A2%98%EF%BC%88%E5%9D%97%E6%8A%98%E6%96%AD%EF%BC%89/index.html">
 <meta property="og:site_name" content="growdu&#39;s blog">
 <meta property="og:description" content="数据库数据完整性问题（块折断）数据库保证数据库完整性（解决块折断问题）当前主要有如下三种方式：  操作日志加double write机制（mysql采用该机制）;  操作日志加full page write机制（postgresql同时采用这两种机制）；  混合方式，既支持操作日志加double write，又支持操作日志加full page write（openguass采用该机制）；   基本">
 <meta property="og:locale" content="zh_CN">
@@ -72,7 +72,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"growdu.gitee.io","root":"/growdu.io/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/growdu.io/local-search.xml"};
+    var CONFIG = {"hostname":"growdu.online","root":"/growdu.io/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/growdu.io/local-search.xml"};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -437,7 +437,7 @@ checkpoint---&gt;controlFile
   <div class="license-box my-3">
     <div class="license-title">
       <div>数据库数据完整性问题（块折断）</div>
-      <div>https://growdu.gitee.io/growdu.io/2022/07/29/数据库数据完整性问题（块折断）/</div>
+      <div>http://growdu.online/growdu.io/2022/07/29/数据库数据完整性问题（块折断）/</div>
     </div>
     <div class="license-meta">
       
