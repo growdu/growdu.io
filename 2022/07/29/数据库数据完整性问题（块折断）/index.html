@@ -5,25 +5,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 6.3.0">
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="apple-touch-icon" sizes="180x180" href="/growdu/growdu.io/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/growdu/growdu.io/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/growdu/growdu.io/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/growdu/growdu.io/images/logo.svg" color="#222">
 
-<link rel="stylesheet" href="/css/main.css">
+<link rel="stylesheet" href="/growdu/growdu.io/css/main.css">
 
 
-<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/growdu/growdu.io/lib/font-awesome/css/all.min.css">
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"github.com","root":"/growdu/growdu.io/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="数据库数据完整性问题（块折断）数据库保证数据库完整性（解决块折断问题）当前主要有如下三种方式：  操作日志加double write机制（mysql采用该机制）;  操作日志加full page write机制（postgresql同时采用这两种机制）；  混合方式，既支持操作日志加double write，又支持操作日志加full page write（openguass采用该机制）；   基本">
 <meta property="og:type" content="article">
 <meta property="og:title" content="数据库数据完整性问题（块折断）">
-<meta property="og:url" content="http://example.com/2022/07/29/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%95%B0%E6%8D%AE%E5%AE%8C%E6%95%B4%E6%80%A7%E9%97%AE%E9%A2%98%EF%BC%88%E5%9D%97%E6%8A%98%E6%96%AD%EF%BC%89/index.html">
+<meta property="og:url" content="https://github.com/growdu/growdu.io/2022/07/29/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%95%B0%E6%8D%AE%E5%AE%8C%E6%95%B4%E6%80%A7%E9%97%AE%E9%A2%98%EF%BC%88%E5%9D%97%E6%8A%98%E6%96%AD%EF%BC%89/index.html">
 <meta property="og:site_name" content="growdu&#39;s blog">
 <meta property="og:description" content="数据库数据完整性问题（块折断）数据库保证数据库完整性（解决块折断问题）当前主要有如下三种方式：  操作日志加double write机制（mysql采用该机制）;  操作日志加full page write机制（postgresql同时采用这两种机制）；  混合方式，既支持操作日志加double write，又支持操作日志加full page write（openguass采用该机制）；   基本">
 <meta property="og:locale" content="zh_CN">
@@ -36,7 +36,7 @@
 <meta property="article:tag" content="mysql">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://example.com/2022/07/29/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%95%B0%E6%8D%AE%E5%AE%8C%E6%95%B4%E6%80%A7%E9%97%AE%E9%A2%98%EF%BC%88%E5%9D%97%E6%8A%98%E6%96%AD%EF%BC%89/">
+<link rel="canonical" href="https://github.com/growdu/growdu.io/2022/07/29/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%95%B0%E6%8D%AE%E5%AE%8C%E6%95%B4%E6%80%A7%E9%97%AE%E9%A2%98%EF%BC%88%E5%9D%97%E6%8A%98%E6%96%AD%EF%BC%89/">
 
 
 <script id="page-configurations">
@@ -98,7 +98,7 @@
 
   <div class="site-meta">
 
-    <a href="/" class="brand" rel="start">
+    <a href="/growdu/growdu.io/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
       <h1 class="site-title">growdu's blog</h1>
       <span class="logo-line-after"><i></i></span>
@@ -118,12 +118,12 @@
   <ul id="menu" class="main-menu menu">
         <li class="menu-item menu-item-home">
 
-    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+    <a href="/growdu/growdu.io/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+    <a href="/growdu/growdu.io/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
 
   </li>
   </ul>
@@ -154,10 +154,10 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/07/29/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%95%B0%E6%8D%AE%E5%AE%8C%E6%95%B4%E6%80%A7%E9%97%AE%E9%A2%98%EF%BC%88%E5%9D%97%E6%8A%98%E6%96%AD%EF%BC%89/">
+    <link itemprop="mainEntityOfPage" href="https://github.com/growdu/growdu.io/2022/07/29/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%95%B0%E6%8D%AE%E5%AE%8C%E6%95%B4%E6%80%A7%E9%97%AE%E9%A2%98%EF%BC%88%E5%9D%97%E6%8A%98%E6%96%AD%EF%BC%89/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/growdu/growdu.io/images/avatar.gif">
       <meta itemprop="name" content="growdu">
       <meta itemprop="description" content="">
     </span>
@@ -192,7 +192,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/database/" itemprop="url" rel="index"><span itemprop="name">database</span></a>
+                  <a href="/growdu/growdu.io/categories/database/" itemprop="url" rel="index"><span itemprop="name">database</span></a>
                 </span>
             </span>
 
@@ -272,27 +272,16 @@
 </ul>
 <p>openGauss采用一个无锁的全局脏页队列数组来依次记录曾经被用户写操作置脏的那些数据页面。</p>
 <h4 id="pgwriter"><a href="#pgwriter" class="headerlink" title="pgwriter"></a>pgwriter</h4><p>pgwriter的工作流程大致如下：</p>
-<pre><code class=" mermaid">graph TB
-获取当前脏页队列队首位置head的值--&gt;从head值下标开始扫描脏页队列--&gt;达到批量刷页上限后将本批脏页写入双写文件并分发给各个pagewriter线程并行写入文件系统--&gt;pagewrite主线程等待所有子线程完成文件写操作--&gt;将当前脏页队列的队首位置head设置为下一个待刷盘的脏页位置--&gt;loop
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">graph TB</span><br><span class="line">获取当前脏页队列队首位置head的值--&gt;从head值下标开始扫描脏页队列--&gt;达到批量刷页上限后将本批脏页写入双写文件并分发给各个pagewriter线程并行写入文件系统--&gt;pagewrite主线程等待所有子线程完成文件写操作--&gt;将当前脏页队列的队首位置head设置为下一个待刷盘的脏页位置--&gt;loop</span><br></pre></td></tr></table></figure>
 
 <p>代码流程如下：</p>
-<pre><code class=" mermaid">graph TB
-ckpt_pagewriter_main--&gt;dw_upgrade_single--&gt;dw_upgrade_batch--&gt;dw_upgrade_renable_double_write--&gt;ckpt_pagewriter_main_thread_loop
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">graph TB</span><br><span class="line">ckpt_pagewriter_main--&gt;dw_upgrade_single--&gt;dw_upgrade_batch--&gt;dw_upgrade_renable_double_write--&gt;ckpt_pagewriter_main_thread_loop</span><br></pre></td></tr></table></figure>
 
 <h3 id="openguass的增量检查点机制"><a href="#openguass的增量检查点机制" class="headerlink" title="openguass的增量检查点机制"></a>openguass的增量检查点机制</h3><p>在openguass中，全量检查点时checkpoint线程同一时刻会将BufferPool中所有脏页写入磁盘，完成打点。</p>
-<pre><code class=" mermaid">graph TB
-checkpoint--&gt;BufferPool--&gt;tableFile
-checkpoint---&gt;controlFile
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">graph TB</span><br><span class="line">checkpoint--&gt;BufferPool--&gt;tableFile</span><br><span class="line">checkpoint---&gt;controlFile</span><br></pre></td></tr></table></figure>
 
 <p>而增量检查点时会有专门的PageWriter线程维护一个脏页队列，定期将脏页刷到磁盘，checkpoint根据PageWriter刷页进度进行打点。</p>
-<pre><code class=" mermaid">graph TB
-PageWriter--&gt;DirtyPageQueue--&gt;tableFile
-DirtyPageQueue--&gt;|recovery lsn|checkpoint
-checkpoint---&gt;controlFile
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">graph TB</span><br><span class="line">PageWriter--&gt;DirtyPageQueue--&gt;tableFile</span><br><span class="line">DirtyPageQueue--&gt;|recovery lsn|checkpoint</span><br><span class="line">checkpoint---&gt;controlFile</span><br></pre></td></tr></table></figure>
 
 <h3 id="postgresql-double-write社区补丁"><a href="#postgresql-double-write社区补丁" class="headerlink" title="postgresql double_write社区补丁"></a>postgresql double_write社区补丁</h3><blockquote>
 <p>为了优化full_page_write，社区提供了一个patch，它的主要设计是创建两个共享内存块队列，checkpoint专用buffer队列和非checkpoint专用buffer队列，同时关闭full_page_write。当用户DML产生的数据buffer需要刷盘时，并不是立即刷到磁盘，而是先进入double write的buffer队列，当buffer队列满时，则将buffer队列里面的数据首先刷到特别的double write文件，然后再将数据刷到数据库文件。通过这种设计就不需要在checkpoint 之后在对数据页面的第一次写的时候会将整个数据页面写到 xlog 里面。当数据库需要恢复的时候，遍历所有double write文件里面的记录块，找到每个记录块对应的数据库page，然后对这个page进行checksum，如果page损坏，那么直接把记录块里面的内容覆盖到buffer数据。最后把double write文件删除，重新初始化buffer队列。</p>
@@ -324,10 +313,10 @@ checkpoint---&gt;controlFile
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/database/" rel="tag"># database</a>
-              <a href="/tags/%E6%95%B0%E6%8D%AE%E5%AE%8C%E6%95%B4%E6%80%A7/" rel="tag"># 数据完整性</a>
-              <a href="/tags/postgresql/" rel="tag"># postgresql</a>
-              <a href="/tags/mysql/" rel="tag"># mysql</a>
+              <a href="/growdu/growdu.io/tags/database/" rel="tag"># database</a>
+              <a href="/growdu/growdu.io/tags/%E6%95%B0%E6%8D%AE%E5%AE%8C%E6%95%B4%E6%80%A7/" rel="tag"># 数据完整性</a>
+              <a href="/growdu/growdu.io/tags/postgresql/" rel="tag"># postgresql</a>
+              <a href="/growdu/growdu.io/tags/mysql/" rel="tag"># mysql</a>
           </div>
 
         
@@ -336,11 +325,11 @@ checkpoint---&gt;controlFile
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/07/28/%E7%BC%A9%E7%9F%ADtcp%E8%B6%85%E6%97%B6%E6%97%B6%E9%97%B4%E7%9A%84%E6%96%B9%E6%B3%95/" rel="prev" title="缩短tcp超时时间的方法">
+    <a href="/growdu/growdu.io/2022/07/28/%E7%BC%A9%E7%9F%ADtcp%E8%B6%85%E6%97%B6%E6%97%B6%E9%97%B4%E7%9A%84%E6%96%B9%E6%B3%95/" rel="prev" title="缩短tcp超时时间的方法">
       <i class="fa fa-chevron-left"></i> 缩短tcp超时时间的方法
     </a></div>
       <div class="post-nav-item">
-    <a href="/2022/07/29/zookeeper%E4%B8%BB%E5%A4%87%E9%9B%86%E7%BE%A4demo/" rel="next" title="zookeeper主备集群demo">
+    <a href="/growdu/growdu.io/2022/07/29/zookeeper%E4%B8%BB%E5%A4%87%E9%9B%86%E7%BE%A4demo/" rel="next" title="zookeeper主备集群demo">
       zookeeper主备集群demo <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
@@ -413,7 +402,7 @@ checkpoint---&gt;controlFile
 <div class="site-state-wrap motion-element">
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
-          <a href="/archives/">
+          <a href="/growdu/growdu.io/archives/">
         
           <span class="site-state-item-count">10</span>
           <span class="site-state-item-name">日志</span>
@@ -474,19 +463,19 @@ checkpoint---&gt;controlFile
   </div>
 
   
-  <script src="/lib/anime.min.js"></script>
-  <script src="/lib/velocity/velocity.min.js"></script>
-  <script src="/lib/velocity/velocity.ui.min.js"></script>
+  <script src="/growdu/growdu.io/lib/anime.min.js"></script>
+  <script src="/growdu/growdu.io/lib/velocity/velocity.min.js"></script>
+  <script src="/growdu/growdu.io/lib/velocity/velocity.ui.min.js"></script>
 
-<script src="/js/utils.js"></script>
+<script src="/growdu/growdu.io/js/utils.js"></script>
 
-<script src="/js/motion.js"></script>
-
-
-<script src="/js/schemes/muse.js"></script>
+<script src="/growdu/growdu.io/js/motion.js"></script>
 
 
-<script src="/js/next-boot.js"></script>
+<script src="/growdu/growdu.io/js/schemes/muse.js"></script>
+
+
+<script src="/growdu/growdu.io/js/next-boot.js"></script>
 
 
 

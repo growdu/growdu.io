@@ -5,37 +5,37 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 6.3.0">
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="apple-touch-icon" sizes="180x180" href="/growdu/growdu.io/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/growdu/growdu.io/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/growdu/growdu.io/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/growdu/growdu.io/images/logo.svg" color="#222">
 
-<link rel="stylesheet" href="/css/main.css">
+<link rel="stylesheet" href="/growdu/growdu.io/css/main.css">
 
 
-<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/growdu/growdu.io/lib/font-awesome/css/all.min.css">
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"github.com","root":"/growdu/growdu.io/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="抓包进阶抓包命令1234tcpdump -i eth1 -vvv -w test.pcap# -i 指定网口# -vvv 在shell中显示抓到的包# -w 将抓到的包写入文件   指定主机名 1tcpdump -i eth1 host www.baidu.com  指定ip 1tcpdump -i eth1 host 192.168.1.12  指定端口 12345tcpdump -i eth1">
 <meta property="og:type" content="article">
 <meta property="og:title" content="tcpdump抓包">
-<meta property="og:url" content="http://example.com/2022/07/29/tcpdump%E6%8A%93%E5%8C%85/index.html">
+<meta property="og:url" content="https://github.com/growdu/growdu.io/2022/07/29/tcpdump%E6%8A%93%E5%8C%85/index.html">
 <meta property="og:site_name" content="growdu&#39;s blog">
 <meta property="og:description" content="抓包进阶抓包命令1234tcpdump -i eth1 -vvv -w test.pcap# -i 指定网口# -vvv 在shell中显示抓到的包# -w 将抓到的包写入文件   指定主机名 1tcpdump -i eth1 host www.baidu.com  指定ip 1tcpdump -i eth1 host 192.168.1.12  指定端口 12345tcpdump -i eth1">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-07-29T14:17:18.000Z">
 <meta property="article:modified_time" content="2023-02-07T03:38:15.090Z">
 <meta property="article:author" content="growdu">
+<meta property="article:tag" content="linux">
 <meta property="article:tag" content="tcp">
 <meta property="article:tag" content="socket">
-<meta property="article:tag" content="linux">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://example.com/2022/07/29/tcpdump%E6%8A%93%E5%8C%85/">
+<link rel="canonical" href="https://github.com/growdu/growdu.io/2022/07/29/tcpdump%E6%8A%93%E5%8C%85/">
 
 
 <script id="page-configurations">
@@ -97,7 +97,7 @@
 
   <div class="site-meta">
 
-    <a href="/" class="brand" rel="start">
+    <a href="/growdu/growdu.io/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
       <h1 class="site-title">growdu's blog</h1>
       <span class="logo-line-after"><i></i></span>
@@ -117,12 +117,12 @@
   <ul id="menu" class="main-menu menu">
         <li class="menu-item menu-item-home">
 
-    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+    <a href="/growdu/growdu.io/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+    <a href="/growdu/growdu.io/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
 
   </li>
   </ul>
@@ -153,10 +153,10 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/07/29/tcpdump%E6%8A%93%E5%8C%85/">
+    <link itemprop="mainEntityOfPage" href="https://github.com/growdu/growdu.io/2022/07/29/tcpdump%E6%8A%93%E5%8C%85/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/growdu/growdu.io/images/avatar.gif">
       <meta itemprop="name" content="growdu">
       <meta itemprop="description" content="">
     </span>
@@ -191,7 +191,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/tcp/" itemprop="url" rel="index"><span itemprop="name">tcp</span></a>
+                  <a href="/growdu/growdu.io/categories/tcp/" itemprop="url" rel="index"><span itemprop="name">tcp</span></a>
                 </span>
             </span>
 
@@ -206,41 +206,41 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="抓包进阶"><a href="#抓包进阶" class="headerlink" title="抓包进阶"></a>抓包进阶</h1><h2 id="抓包命令"><a href="#抓包命令" class="headerlink" title="抓包命令"></a>抓包命令</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shell">tcpdump -i eth1 -vvv -w test.pcap<br><span class="hljs-meta prompt_"># </span><span class="language-bash">-i 指定网口</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">-vvv 在shell中显示抓到的包</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">-w 将抓到的包写入文件</span><br></code></pre></td></tr></table></figure>
+        <h1 id="抓包进阶"><a href="#抓包进阶" class="headerlink" title="抓包进阶"></a>抓包进阶</h1><h2 id="抓包命令"><a href="#抓包命令" class="headerlink" title="抓包命令"></a>抓包命令</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">tcpdump -i eth1 -vvv -w test.pcap</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">-i 指定网口</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">-vvv 在shell中显示抓到的包</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">-w 将抓到的包写入文件</span></span><br></pre></td></tr></table></figure>
 
 <ul>
 <li><p>指定主机名</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">tcpdump -i eth1 host www.baidu.com<br></code></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tcpdump -i eth1 host www.baidu.com</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>指定ip</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">tcpdump -i eth1 host 192.168.1.12<br></code></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tcpdump -i eth1 host 192.168.1.12</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>指定端口</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs shell">tcpdump -i eth1 port 80<br><span class="hljs-meta prompt_"># </span><span class="language-bash">指定源端口</span><br>tcpdump -i eth1 src port 80<br><span class="hljs-meta prompt_"># </span><span class="language-bash">指定目的端口</span><br>tcpdump -i eth1 dst port 80<br></code></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">tcpdump -i eth1 port 80</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">指定源端口</span></span><br><span class="line">tcpdump -i eth1 src port 80</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">指定目的端口</span></span><br><span class="line">tcpdump -i eth1 dst port 80</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>指定协议</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">对于传输层之上的协议需加port</span><br>tcpdump -i eth1 port http<br></code></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">对于传输层之上的协议需加port</span></span><br><span class="line">tcpdump -i eth1 port http</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>指定icmp</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">ping打包</span><br>ping -s 4800 ip<br><span class="hljs-meta prompt_"># </span><span class="language-bash">抓取ping包</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">传输层及传输层之下的协议直接跟协议名</span><br>tcpdump -i eth1 icmp<br></code></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">ping打包</span></span><br><span class="line">ping -s 4800 ip</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">抓取ping包</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">传输层及传输层之下的协议直接跟协议名</span></span><br><span class="line">tcpdump -i eth1 icmp</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>当需要长时间抓包时，为避免单个抓包文件过大导致打开查询缓慢，可设置当个抓包文件大小</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">指定单个抓包文件大小为100M，超过100M会保存在新文件中</span><br>tcpdump -i eth1 -C 100M -w test.pcap<br></code></pre></td></tr></table></figure></li>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">指定单个抓包文件大小为100M，超过100M会保存在新文件中</span></span><br><span class="line">tcpdump -i eth1 -C 100M -w test.pcap</span><br></pre></td></tr></table></figure></li>
 </ul>
 <h2 id="拆分包"><a href="#拆分包" class="headerlink" title="拆分包"></a>拆分包</h2><p>当单个文件报文个数过多时，打开和查询报文缓慢。可以使用wireshark相关工具对其进行拆分。</p>
 <p>进入wireshark的安装目录，可以看到有一个editcap的程序。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">-c 指定多少个包拆分为一个文件， src待拆分的包文件路径及文件名，dst是拆分后的文件路径及文件名</span><br>editcap.exe -c 200000 src dst<br></code></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">-c 指定多少个包拆分为一个文件， src待拆分的包文件路径及文件名，dst是拆分后的文件路径及文件名</span></span><br><span class="line">editcap.exe -c 200000 src dst</span><br></pre></td></tr></table></figure>
 
 <h2 id="合并包"><a href="#合并包" class="headerlink" title="合并包"></a>合并包</h2><p>Mergecap 从名字上 可以看出该命令的功能是合并多个报文为一个报文。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs shell">C:\Program Files\Wireshark&gt;mergecap -h<br>Mergecap (Wireshark) 3.4.2 (v3.4.2-0-ga889cf1b1bf9)<br>Merge two or more capture files into one.<br>See https://www.wireshark.org for more information.<br><br>Usage: mergecap [options] -w &lt;outfile&gt;|- &lt;infile&gt; [&lt;infile&gt; ...]<br><br>Output:<br>  -a                concatenate rather than merge files.<br>                    default is to merge based on frame timestamps.<br>  -s &lt;snaplen&gt;      truncate packets to &lt;snaplen&gt; bytes of data.<br>  -w &lt;outfile&gt;|-    set the output filename to &lt;outfile&gt; or &#x27;-&#x27; for stdout.<br>  -F &lt;capture type&gt; set the output file type; default is pcapng.<br>                    an empty &quot;-F&quot; option will list the file types.<br>  -I &lt;IDB merge mode&gt; set the merge mode for Interface Description Blocks; default is &#x27;all&#x27;.<br>                    an empty &quot;-I&quot; option will list the merge modes.<br><br>Miscellaneous:<br>  -h                display this help and exit.<br>  -v                verbose output.<br></code></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">C:\Program Files\Wireshark&gt;mergecap -h</span><br><span class="line">Mergecap (Wireshark) 3.4.2 (v3.4.2-0-ga889cf1b1bf9)</span><br><span class="line">Merge two or more capture files into one.</span><br><span class="line">See https://www.wireshark.org for more information.</span><br><span class="line"></span><br><span class="line">Usage: mergecap [options] -w &lt;outfile&gt;|- &lt;infile&gt; [&lt;infile&gt; ...]</span><br><span class="line"></span><br><span class="line">Output:</span><br><span class="line">  -a                concatenate rather than merge files.</span><br><span class="line">                    default is to merge based on frame timestamps.</span><br><span class="line">  -s &lt;snaplen&gt;      truncate packets to &lt;snaplen&gt; bytes of data.</span><br><span class="line">  -w &lt;outfile&gt;|-    set the output filename to &lt;outfile&gt; or &#x27;-&#x27; for stdout.</span><br><span class="line">  -F &lt;capture type&gt; set the output file type; default is pcapng.</span><br><span class="line">                    an empty &quot;-F&quot; option will list the file types.</span><br><span class="line">  -I &lt;IDB merge mode&gt; set the merge mode for Interface Description Blocks; default is &#x27;all&#x27;.</span><br><span class="line">                    an empty &quot;-I&quot; option will list the merge modes.</span><br><span class="line"></span><br><span class="line">Miscellaneous:</span><br><span class="line">  -h                display this help and exit.</span><br><span class="line">  -v                verbose output.</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs shell">mergecap -v -a -F pcap -w test.pcap<br>mergecap -v -a userip-1.pcap userip-2.pcap -F pcap -w merge_out.pcap<br>    -v参数表示打印每一片报文的编号，报文较多的话会打屏。<br>    -a参数表示的是按照文件中顺序将报文进行合并，默认情况是按照时间戳的顺序进行合并。由于每一片报文头部都是由有时间戳信息的，不明白的可以查看这里。<br>    -F表示文件的存储格式，例如pcap,pcapng等等。在-F后面参数为空的情况下，会列出该命令支持的所有文件格式，对照选择即可。<br>    -w即文件输出的<br></code></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mergecap -v -a -F pcap -w test.pcap</span><br><span class="line">mergecap -v -a userip-1.pcap userip-2.pcap -F pcap -w merge_out.pcap</span><br><span class="line">    -v参数表示打印每一片报文的编号，报文较多的话会打屏。</span><br><span class="line">    -a参数表示的是按照文件中顺序将报文进行合并，默认情况是按照时间戳的顺序进行合并。由于每一片报文头部都是由有时间戳信息的，不明白的可以查看这里。</span><br><span class="line">    -F表示文件的存储格式，例如pcap,pcapng等等。在-F后面参数为空的情况下，会列出该命令支持的所有文件格式，对照选择即可。</span><br><span class="line">    -w即文件输出的</span><br></pre></td></tr></table></figure>
 
 <h2 id="合并一定比例的包"><a href="#合并一定比例的包" class="headerlink" title="合并一定比例的包"></a>合并一定比例的包</h2><p>使用python脚本构造固定比例的包，如1:1024等。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> os<br><br>base_file = <span class="hljs-string">&quot;5gc.pcap&quot;</span><br>arp_file = <span class="hljs-string">&quot;arp_request.pcap&quot;</span><br>ratio = <span class="hljs-number">0</span><br>dst_file = <span class="hljs-string">&quot;&quot;</span><br>pwd = os.curdir<br><span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">2</span>,<span class="hljs-number">20</span>):<br>    ratio = <span class="hljs-built_in">pow</span>(<span class="hljs-number">2</span>,num)<br>    copy_file = <span class="hljs-string">&quot;5gc_copy_&quot;</span> + <span class="hljs-built_in">str</span>(num) + <span class="hljs-string">&quot;.pcap&quot;</span><br>    os.system(<span class="hljs-string">&#x27;copy %s %s&#x27;</span> % (base_file, copy_file))<br>    dst_file = <span class="hljs-string">&quot;5gc_&quot;</span> + <span class="hljs-built_in">str</span>(ratio) + <span class="hljs-string">&quot;.pcap&quot;</span><br>    os.system(<span class="hljs-string">&quot;mergecap.exe -v -a %s %s -F pcap -w %s&quot;</span> % (base_file, copy_file, dst_file))<br>    base_file = dst_file<br>    dst_arp_file = <span class="hljs-string">&quot;5gc_arp_1_&quot;</span> + <span class="hljs-built_in">str</span>(ratio) + <span class="hljs-string">&quot;.pcap&quot;</span><br>    os.system(<span class="hljs-string">&quot;mergecap.exe -v -a %s %s -F pcap -w %s&quot;</span> % (base_file, arp_file, dst_arp_file))<br></code></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">base_file = <span class="string">&quot;5gc.pcap&quot;</span></span><br><span class="line">arp_file = <span class="string">&quot;arp_request.pcap&quot;</span></span><br><span class="line">ratio = <span class="number">0</span></span><br><span class="line">dst_file = <span class="string">&quot;&quot;</span></span><br><span class="line">pwd = os.curdir</span><br><span class="line"><span class="keyword">for</span> num <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>,<span class="number">20</span>):</span><br><span class="line">    ratio = <span class="built_in">pow</span>(<span class="number">2</span>,num)</span><br><span class="line">    copy_file = <span class="string">&quot;5gc_copy_&quot;</span> + <span class="built_in">str</span>(num) + <span class="string">&quot;.pcap&quot;</span></span><br><span class="line">    os.system(<span class="string">&#x27;copy %s %s&#x27;</span> % (base_file, copy_file))</span><br><span class="line">    dst_file = <span class="string">&quot;5gc_&quot;</span> + <span class="built_in">str</span>(ratio) + <span class="string">&quot;.pcap&quot;</span></span><br><span class="line">    os.system(<span class="string">&quot;mergecap.exe -v -a %s %s -F pcap -w %s&quot;</span> % (base_file, copy_file, dst_file))</span><br><span class="line">    base_file = dst_file</span><br><span class="line">    dst_arp_file = <span class="string">&quot;5gc_arp_1_&quot;</span> + <span class="built_in">str</span>(ratio) + <span class="string">&quot;.pcap&quot;</span></span><br><span class="line">    os.system(<span class="string">&quot;mergecap.exe -v -a %s %s -F pcap -w %s&quot;</span> % (base_file, arp_file, dst_arp_file))</span><br></pre></td></tr></table></figure>
 
 <h2 id="查询包"><a href="#查询包" class="headerlink" title="查询包"></a>查询包</h2><p>一般获取抓包文件后，需要使用wireshark对包进行查询和分析。常见的查询命令如下：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs shell">tcp # 过滤tcp报文<br>ip.addr == 127.0.0.1 # 根据ip地址过滤<br>tcp.flags.reset == 1 # 过滤reset报文<br>tcp.port == 8080 # 根据端口过滤<br>tcp.len &gt; 0 # 根据tcp数据长度过滤<br></code></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">tcp # 过滤tcp报文</span><br><span class="line">ip.addr == 127.0.0.1 # 根据ip地址过滤</span><br><span class="line">tcp.flags.reset == 1 # 过滤reset报文</span><br><span class="line">tcp.port == 8080 # 根据端口过滤</span><br><span class="line">tcp.len &gt; 0 # 根据tcp数据长度过滤</span><br></pre></td></tr></table></figure>
 
 
 
@@ -254,9 +254,9 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/tcp/" rel="tag"># tcp</a>
-              <a href="/tags/socket/" rel="tag"># socket</a>
-              <a href="/tags/linux/" rel="tag"># linux</a>
+              <a href="/growdu/growdu.io/tags/linux/" rel="tag"># linux</a>
+              <a href="/growdu/growdu.io/tags/tcp/" rel="tag"># tcp</a>
+              <a href="/growdu/growdu.io/tags/socket/" rel="tag"># socket</a>
           </div>
 
         
@@ -265,11 +265,11 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/07/29/%E5%8F%98%E9%95%BF%E6%95%B0%E7%BB%84%EF%BC%88%E6%9F%94%E6%80%A7%E6%95%B0%E7%BB%84%EF%BC%89/" rel="prev" title="变长数组（柔性数组）">
+    <a href="/growdu/growdu.io/2022/07/29/%E5%8F%98%E9%95%BF%E6%95%B0%E7%BB%84%EF%BC%88%E6%9F%94%E6%80%A7%E6%95%B0%E7%BB%84%EF%BC%89/" rel="prev" title="变长数组（柔性数组）">
       <i class="fa fa-chevron-left"></i> 变长数组（柔性数组）
     </a></div>
       <div class="post-nav-item">
-    <a href="/2022/07/29/docker%E4%B8%8E%E5%AE%BF%E4%B8%BB%E6%9C%BA%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98%E9%80%9A%E4%BF%A1/" rel="next" title="docker与宿主机共享内存通信">
+    <a href="/growdu/growdu.io/2022/07/29/docker%E4%B8%8E%E5%AE%BF%E4%B8%BB%E6%9C%BA%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98%E9%80%9A%E4%BF%A1/" rel="next" title="docker与宿主机共享内存通信">
       docker与宿主机共享内存通信 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
@@ -342,7 +342,7 @@
 <div class="site-state-wrap motion-element">
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
-          <a href="/archives/">
+          <a href="/growdu/growdu.io/archives/">
         
           <span class="site-state-item-count">10</span>
           <span class="site-state-item-name">日志</span>
@@ -403,19 +403,19 @@
   </div>
 
   
-  <script src="/lib/anime.min.js"></script>
-  <script src="/lib/velocity/velocity.min.js"></script>
-  <script src="/lib/velocity/velocity.ui.min.js"></script>
+  <script src="/growdu/growdu.io/lib/anime.min.js"></script>
+  <script src="/growdu/growdu.io/lib/velocity/velocity.min.js"></script>
+  <script src="/growdu/growdu.io/lib/velocity/velocity.ui.min.js"></script>
 
-<script src="/js/utils.js"></script>
+<script src="/growdu/growdu.io/js/utils.js"></script>
 
-<script src="/js/motion.js"></script>
-
-
-<script src="/js/schemes/muse.js"></script>
+<script src="/growdu/growdu.io/js/motion.js"></script>
 
 
-<script src="/js/next-boot.js"></script>
+<script src="/growdu/growdu.io/js/schemes/muse.js"></script>
+
+
+<script src="/growdu/growdu.io/js/next-boot.js"></script>
 
 
 

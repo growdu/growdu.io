@@ -5,25 +5,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 6.3.0">
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="apple-touch-icon" sizes="180x180" href="/growdu/growdu.io/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/growdu/growdu.io/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/growdu/growdu.io/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/growdu/growdu.io/images/logo.svg" color="#222">
 
-<link rel="stylesheet" href="/css/main.css">
+<link rel="stylesheet" href="/growdu/growdu.io/css/main.css">
 
 
-<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/growdu/growdu.io/lib/font-awesome/css/all.min.css">
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"github.com","root":"/growdu/growdu.io/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="vpp开发指南vpp二次开发一般都是基于vpp框架进行插件开发。具体友包含以下几个方面：  配置 插入节点 收包 发包  配置12345&#x2F;&#x2F; sample_config是配置读取函数&#x2F;&#x2F; sample是startup.conf文件中的模块名字VLIB_CONFIG_FUNCTION (sample_config, &quot;sample&quot;);&#x2F;&#x2F; 读取完配置后可以使用sample_in">
 <meta property="og:type" content="article">
 <meta property="og:title" content="vpp开发指南">
-<meta property="og:url" content="http://example.com/2022/07/27/vpp%E5%BC%80%E5%8F%91%E6%8C%87%E5%8D%97/index.html">
+<meta property="og:url" content="https://github.com/growdu/growdu.io/2022/07/27/vpp%E5%BC%80%E5%8F%91%E6%8C%87%E5%8D%97/index.html">
 <meta property="og:site_name" content="growdu&#39;s blog">
 <meta property="og:description" content="vpp开发指南vpp二次开发一般都是基于vpp框架进行插件开发。具体友包含以下几个方面：  配置 插入节点 收包 发包  配置12345&#x2F;&#x2F; sample_config是配置读取函数&#x2F;&#x2F; sample是startup.conf文件中的模块名字VLIB_CONFIG_FUNCTION (sample_config, &quot;sample&quot;);&#x2F;&#x2F; 读取完配置后可以使用sample_in">
 <meta property="og:locale" content="zh_CN">
@@ -34,7 +34,7 @@
 <meta property="article:tag" content="网络">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://example.com/2022/07/27/vpp%E5%BC%80%E5%8F%91%E6%8C%87%E5%8D%97/">
+<link rel="canonical" href="https://github.com/growdu/growdu.io/2022/07/27/vpp%E5%BC%80%E5%8F%91%E6%8C%87%E5%8D%97/">
 
 
 <script id="page-configurations">
@@ -96,7 +96,7 @@
 
   <div class="site-meta">
 
-    <a href="/" class="brand" rel="start">
+    <a href="/growdu/growdu.io/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
       <h1 class="site-title">growdu's blog</h1>
       <span class="logo-line-after"><i></i></span>
@@ -116,12 +116,12 @@
   <ul id="menu" class="main-menu menu">
         <li class="menu-item menu-item-home">
 
-    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+    <a href="/growdu/growdu.io/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+    <a href="/growdu/growdu.io/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
 
   </li>
   </ul>
@@ -152,10 +152,10 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/07/27/vpp%E5%BC%80%E5%8F%91%E6%8C%87%E5%8D%97/">
+    <link itemprop="mainEntityOfPage" href="https://github.com/growdu/growdu.io/2022/07/27/vpp%E5%BC%80%E5%8F%91%E6%8C%87%E5%8D%97/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/growdu/growdu.io/images/avatar.gif">
       <meta itemprop="name" content="growdu">
       <meta itemprop="description" content="">
     </span>
@@ -190,7 +190,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/vpp/" itemprop="url" rel="index"><span itemprop="name">vpp</span></a>
+                  <a href="/growdu/growdu.io/categories/vpp/" itemprop="url" rel="index"><span itemprop="name">vpp</span></a>
                 </span>
             </span>
 
@@ -212,27 +212,27 @@
 <li>收包</li>
 <li>发包</li>
 </ul>
-<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// sample_config是配置读取函数</span><br><span class="hljs-comment">// sample是startup.conf文件中的模块名字</span><br>VLIB_CONFIG_FUNCTION (sample_config, <span class="hljs-string">&quot;sample&quot;</span>);<br><span class="hljs-comment">// 读取完配置后可以使用sample_init来进行初始化</span><br>VLIB_INIT_FUNCTION(sample_init);<br></code></pre></td></tr></table></figure>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// sample_config是配置读取函数</span></span><br><span class="line"><span class="comment">// sample是startup.conf文件中的模块名字</span></span><br><span class="line">VLIB_CONFIG_FUNCTION (sample_config, <span class="string">&quot;sample&quot;</span>);</span><br><span class="line"><span class="comment">// 读取完配置后可以使用sample_init来进行初始化</span></span><br><span class="line">VLIB_INIT_FUNCTION(sample_init);</span><br></pre></td></tr></table></figure>
 
-<h2 id="插入节点"><a href="#插入节点" class="headerlink" title="插入节点"></a>插入节点</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 注册一个名为sample_node的节点</span><br>VLIB_REGISTER_NODE (sample_node);<br><span class="hljs-comment">// sample_node收到报文后如何处理</span><br>VLIB_NODE_FN (sample_node) (<span class="hljs-type">vlib_main_t</span> * vm, <span class="hljs-type">vlib_node_runtime_t</span> * node,<br>				<span class="hljs-type">vlib_frame_t</span> * f);<br></code></pre></td></tr></table></figure>
+<h2 id="插入节点"><a href="#插入节点" class="headerlink" title="插入节点"></a>插入节点</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 注册一个名为sample_node的节点</span></span><br><span class="line">VLIB_REGISTER_NODE (sample_node);</span><br><span class="line"><span class="comment">// sample_node收到报文后如何处理</span></span><br><span class="line">VLIB_NODE_FN (sample_node) (<span class="type">vlib_main_t</span> * vm, <span class="type">vlib_node_runtime_t</span> * node,</span><br><span class="line">				<span class="type">vlib_frame_t</span> * f);</span><br></pre></td></tr></table></figure>
 
 <h2 id="收包"><a href="#收包" class="headerlink" title="收包"></a>收包</h2><p>收包插入一个收包节点，组织节点关系即可。</p>
 <ul>
 <li><p>L1</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">vnet_hw_interface_rx_redirect_to_node (<span class="hljs-type">vnet_main_t</span> *vnm, u32 hw_if_index, u32 node_index);<br></code></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vnet_hw_interface_rx_redirect_to_node (<span class="type">vnet_main_t</span> *vnm, u32 hw_if_index, u32 node_index);</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>L2、L3</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">ethernet_register_input_type (<span class="hljs-type">vlib_main_t</span> *vm, <span class="hljs-type">ethernet_type_t</span> type, u32 node_index);<br></code></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ethernet_register_input_type (<span class="type">vlib_main_t</span> *vm, <span class="type">ethernet_type_t</span> type, u32 node_index);</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>L4</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">ip4_register_protocol (u32 protocol, u32 node_index);<br></code></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ip4_register_protocol (u32 protocol, u32 node_index);</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>L5</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">udp_register_dst_port (<span class="hljs-type">vlib_main_t</span> * vm, <span class="hljs-type">udp_dst_port_t</span> dst_port, u32 node_index, u8 is_ip4);<br></code></pre></td></tr></table></figure></li>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">udp_register_dst_port (<span class="type">vlib_main_t</span> * vm, <span class="type">udp_dst_port_t</span> dst_port, u32 node_index, u8 is_ip4);</span><br></pre></td></tr></table></figure></li>
 </ul>
 <h2 id="发包"><a href="#发包" class="headerlink" title="发包"></a>发包</h2><p>发包插入一个发包节点，组织节点关系即可。</p>
 <h2 id="命令下发"><a href="#命令下发" class="headerlink" title="命令下发"></a>命令下发</h2><p>注册cli命令，进而可以在vppctl中对vpp流程进行控制。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c">VLIB_CLI_COMMAND (sample_node, <span class="hljs-type">static</span>) = &#123;<br>  .path = <span class="hljs-string">&quot;sample&quot;</span>,<br>  .function = sample,<br>  .short_help = <span class="hljs-string">&quot;sample&quot;</span>,<br>&#125;;<br></code></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">VLIB_CLI_COMMAND (sample_node, <span class="type">static</span>) = &#123;</span><br><span class="line">  .path = <span class="string">&quot;sample&quot;</span>,</span><br><span class="line">  .function = sample,</span><br><span class="line">  .short_help = <span class="string">&quot;sample&quot;</span>,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
 <h2 id="云服务推荐"><a href="#云服务推荐" class="headerlink" title="云服务推荐"></a>云服务推荐</h2><h2 id="云服务"><a href="#云服务" class="headerlink" title="云服务"></a>云服务</h2><p>【开发云】年年都是折扣价，不用四处薅羊毛 <a target="_blank" rel="noopener" href="https://dev.csdn.net/activity?utm_source=sale_source&sale_source=Igt9xAFU3H">https://dev.csdn.net/activity?utm_source=sale_source&amp;sale_source=Igt9xAFU3H</a></p>
 
@@ -244,8 +244,8 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/vpp/" rel="tag"># vpp</a>
-              <a href="/tags/%E7%BD%91%E7%BB%9C/" rel="tag"># 网络</a>
+              <a href="/growdu/growdu.io/tags/vpp/" rel="tag"># vpp</a>
+              <a href="/growdu/growdu.io/tags/%E7%BD%91%E7%BB%9C/" rel="tag"># 网络</a>
           </div>
 
         
@@ -254,11 +254,11 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/07/26/dpdk-kni-use/" rel="prev" title="dpdk_kni_use">
+    <a href="/growdu/growdu.io/2022/07/26/dpdk-kni-use/" rel="prev" title="dpdk_kni_use">
       <i class="fa fa-chevron-left"></i> dpdk_kni_use
     </a></div>
       <div class="post-nav-item">
-    <a href="/2022/07/28/%E7%BC%A9%E7%9F%ADtcp%E8%B6%85%E6%97%B6%E6%97%B6%E9%97%B4%E7%9A%84%E6%96%B9%E6%B3%95/" rel="next" title="缩短tcp超时时间的方法">
+    <a href="/growdu/growdu.io/2022/07/28/%E7%BC%A9%E7%9F%ADtcp%E8%B6%85%E6%97%B6%E6%97%B6%E9%97%B4%E7%9A%84%E6%96%B9%E6%B3%95/" rel="next" title="缩短tcp超时时间的方法">
       缩短tcp超时时间的方法 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
@@ -331,7 +331,7 @@
 <div class="site-state-wrap motion-element">
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
-          <a href="/archives/">
+          <a href="/growdu/growdu.io/archives/">
         
           <span class="site-state-item-count">10</span>
           <span class="site-state-item-name">日志</span>
@@ -392,19 +392,19 @@
   </div>
 
   
-  <script src="/lib/anime.min.js"></script>
-  <script src="/lib/velocity/velocity.min.js"></script>
-  <script src="/lib/velocity/velocity.ui.min.js"></script>
+  <script src="/growdu/growdu.io/lib/anime.min.js"></script>
+  <script src="/growdu/growdu.io/lib/velocity/velocity.min.js"></script>
+  <script src="/growdu/growdu.io/lib/velocity/velocity.ui.min.js"></script>
 
-<script src="/js/utils.js"></script>
+<script src="/growdu/growdu.io/js/utils.js"></script>
 
-<script src="/js/motion.js"></script>
-
-
-<script src="/js/schemes/muse.js"></script>
+<script src="/growdu/growdu.io/js/motion.js"></script>
 
 
-<script src="/js/next-boot.js"></script>
+<script src="/growdu/growdu.io/js/schemes/muse.js"></script>
+
+
+<script src="/growdu/growdu.io/js/next-boot.js"></script>
 
 
 
