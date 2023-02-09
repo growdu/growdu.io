@@ -1,212 +1,282 @@
+
+
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
 <head>
   <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
-<meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 6.3.0">
-  <link rel="apple-touch-icon" sizes="180x180" href="/growdu/growdu.io/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/growdu/growdu.io/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/growdu/growdu.io/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/growdu/growdu.io/images/logo.svg" color="#222">
-
-<link rel="stylesheet" href="/growdu/growdu.io/css/main.css">
-
-
-<link rel="stylesheet" href="/growdu/growdu.io/lib/font-awesome/css/all.min.css">
-
-<script id="hexo-configurations">
-    var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"github.com","root":"/growdu/growdu.io/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
-  </script>
-
-  <meta name="description" content="dpdk之kni使用什么是kni Kni(Kernel NIC Interface)内核网卡接口，是DPDK允许用户态和内核态交换报文的解决方案，模拟了一个虚拟的网口，提供dpdk的应用程序和linux内核之间通讯。kni接口允许报文从用户态接收后转发到linu协议栈去。 为什么要弄一个kni接口，虽然dpdk的高速转发性能很出色，但是也有自己的一些缺点，比如没有协议栈就是其中一项缺陷，当然也可能">
+  <link rel="apple-touch-icon" sizes="76x76" href="/growdu.io/img/fluid.png">
+  <link rel="icon" href="/growdu.io/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="growdu">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="dpdk之kni使用什么是kni Kni(Kernel NIC Interface)内核网卡接口，是DPDK允许用户态和内核态交换报文的解决方案，模拟了一个虚拟的网口，提供dpdk的应用程序和linux内核之间通讯。kni接口允许报文从用户态接收后转发到linu协议栈去。 为什么要弄一个kni接口，虽然dpdk的高速转发性能很出色，但是也有自己的一些缺点，比如没有协议栈就是其中一项缺陷，当然也可能">
 <meta property="og:type" content="article">
 <meta property="og:title" content="dpdk_kni_use">
-<meta property="og:url" content="https://github.com/growdu/growdu.io/2022/07/26/dpdk-kni-use/index.html">
+<meta property="og:url" content="http://growdu.online/growdu.io/2022/07/26/dpdk-kni-use/index.html">
 <meta property="og:site_name" content="growdu&#39;s blog">
 <meta property="og:description" content="dpdk之kni使用什么是kni Kni(Kernel NIC Interface)内核网卡接口，是DPDK允许用户态和内核态交换报文的解决方案，模拟了一个虚拟的网口，提供dpdk的应用程序和linux内核之间通讯。kni接口允许报文从用户态接收后转发到linu协议栈去。 为什么要弄一个kni接口，虽然dpdk的高速转发性能很出色，但是也有自己的一些缺点，比如没有协议栈就是其中一项缺陷，当然也可能">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-07-26T08:55:56.000Z">
 <meta property="article:modified_time" content="2023-02-07T03:38:15.086Z">
 <meta property="article:author" content="growdu">
+<meta property="article:tag" content="linux">
 <meta property="article:tag" content="dpdk">
 <meta property="article:tag" content="kni">
-<meta property="article:tag" content="linux">
-<meta name="twitter:card" content="summary">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>dpdk_kni_use - growdu&#39;s blog</title>
 
-<link rel="canonical" href="https://github.com/growdu/growdu.io/2022/07/26/dpdk-kni-use/">
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
 
-<script id="page-configurations">
-  // https://hexo.io/docs/variables.html
-  CONFIG.page = {
-    sidebar: "",
-    isHome : false,
-    isPost : true,
-    lang   : 'zh-CN'
-  };
-</script>
 
-  <title>dpdk_kni_use | growdu's blog</title>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/growdu.io/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/growdu.io/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/growdu.io/css/highlight-dark.css" />
   
 
 
 
 
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"growdu.online","root":"/growdu.io/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/growdu.io/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/growdu.io/js/utils.js" ></script>
+  <script  src="/growdu.io/js/color-schema.js" ></script>
+  
 
 
-  <noscript>
-  <style>
-  .use-motion .brand,
-  .use-motion .menu-item,
-  .sidebar-inner,
-  .use-motion .post-block,
-  .use-motion .pagination,
-  .use-motion .comments,
-  .use-motion .post-header,
-  .use-motion .post-body,
-  .use-motion .collection-header { opacity: initial; }
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
 
-  .use-motion .site-title,
-  .use-motion .site-subtitle {
-    opacity: initial;
-    top: initial;
-  }
 
-  .use-motion .logo-line-before i { left: initial; }
-  .use-motion .logo-line-after i { right: initial; }
-  </style>
-</noscript>
+<body>
+  
 
-</head>
+  <header>
+    
 
-<body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
-    <div class="headband"></div>
-
-    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-container">
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="切换导航栏">
-      <span class="toggle-line toggle-line-first"></span>
-      <span class="toggle-line toggle-line-middle"></span>
-      <span class="toggle-line toggle-line-last"></span>
-    </div>
-  </div>
-
-  <div class="site-meta">
-
-    <a href="/growdu/growdu.io/" class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">growdu's blog</h1>
-      <span class="logo-line-after"><i></i></span>
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/growdu.io/">
+      <strong>growdu</strong>
     </a>
-  </div>
 
-  <div class="site-nav-right">
-    <div class="toggle popup-trigger">
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/growdu.io/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/growdu.io/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/growdu.io/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/growdu.io/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/growdu.io/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
     </div>
   </div>
-</div>
-
-
-
-
-<nav class="site-nav">
-  <ul id="menu" class="main-menu menu">
-        <li class="menu-item menu-item-home">
-
-    <a href="/growdu/growdu.io/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
-
-  </li>
-        <li class="menu-item menu-item-archives">
-
-    <a href="/growdu/growdu.io/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
-
-  </li>
-  </ul>
 </nav>
 
+  
 
+<div id="banner" class="banner" parallax=true
+     style="background: url('/growdu.io/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="dpdk_kni_use"></span>
+          
+        </div>
 
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-07-26 16:55" pubdate>
+          2022年7月26日 下午
+        </time>
+      </span>
+    
+  </div>
 
-</div>
-    </header>
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          7.4k 字
+        
+      </span>
+    
 
     
-  <div class="back-to-top">
-    <i class="fa fa-arrow-up"></i>
-    <span>0%</span>
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          62 分钟
+        
+      </span>
+    
+
+    
+    
   </div>
 
 
-    <main class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          
-
-          <div class="content post posts-expand">
-            
-
-    
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://github.com/growdu/growdu.io/2022/07/26/dpdk-kni-use/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/growdu/growdu.io/images/avatar.gif">
-      <meta itemprop="name" content="growdu">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="growdu's blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          dpdk_kni_use
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-07-26 16:55:56" itemprop="dateCreated datePublished" datetime="2022-07-26T16:55:56+08:00">2022-07-26</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-02-07 11:38:15" itemprop="dateModified" datetime="2023-02-07T11:38:15+08:00">2023-02-07</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/growdu/growdu.io/categories/dpdk/" itemprop="url" rel="index"><span itemprop="name">dpdk</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
+        
+      </div>
 
       
-        <h1 id="dpdk之kni使用"><a href="#dpdk之kni使用" class="headerlink" title="dpdk之kni使用"></a>dpdk之kni使用</h1><h2 id="什么是kni"><a href="#什么是kni" class="headerlink" title="什么是kni"></a>什么是kni</h2><blockquote>
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">dpdk_kni_use</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="dpdk之kni使用"><a href="#dpdk之kni使用" class="headerlink" title="dpdk之kni使用"></a>dpdk之kni使用</h1><h2 id="什么是kni"><a href="#什么是kni" class="headerlink" title="什么是kni"></a>什么是kni</h2><blockquote>
 <p>Kni(Kernel NIC Interface)内核网卡接口，是DPDK允许用户态和内核态交换报文的解决方案，模拟了一个虚拟的网口，提供dpdk的应用程序和linux内核之间通讯。kni接口允许报文从用户态接收后转发到linu协议栈去。 为什么要弄一个kni接口，虽然dpdk的高速转发性能很出色，但是也有自己的一些缺点，比如没有协议栈就是其中一项缺陷，当然也可能当时设计时就将没有将协议栈考虑进去，毕竟协议栈需要将报文转发处理，可能会使处理报文的能力大大降低。</p>
 </blockquote>
 <blockquote>
@@ -221,10 +291,10 @@
 <li>提供到内核协议栈接口</li>
 </ul>
 <h2 id="kni代码分析"><a href="#kni代码分析" class="headerlink" title="kni代码分析"></a>kni代码分析</h2><p>和igb uio模块一样，kni模块分成内核以及用户态代码，内核模块在编译出来之后为rte_kni.ko，首先插入内核，dpdk提供了一个用户态的例子。首先看下kni内核模块代码,在kni_misc.c中，ko代码入口为</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">module_init(kni_init);</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">module_init(kni_init);<br></code></pre></td></tr></table></figure>
 
 <p>首先选择kni的线程模式，分为单线程还是多线程，所谓单线程是指所有的kni端口收发都由一个线程守护，多线程只是每一个kni端口分为由一个线程守护，这部分是在插入模块时带入参数选择。 接着调用注册函数misc_register，将kni注册为一个混杂设备。其中kni_misc结构体里面定义了该混杂设备的一些操作：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="class"><span class="keyword">struct</span> <span class="title">miscdevice</span> <span class="title">kni_misc</span> =</span> &#123;</span><br><span class="line">	.minor = MISC_DYNAMIC_MINOR,</span><br><span class="line">	.name = KNI_DEVICE,</span><br><span class="line">	.fops = &amp;kni_fops,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="type">static</span> <span class="class"><span class="keyword">struct</span> <span class="title">file_operations</span> <span class="title">kni_fops</span> =</span> &#123;</span><br><span class="line">    .owner = THIS_MODULE,</span><br><span class="line">    .open = kni_open,</span><br><span class="line">    .release = kni_release,</span><br><span class="line">    .unlocked_ioctl = (<span class="type">void</span> *)kni_ioctl,</span><br><span class="line">    .compat_ioctl = (<span class="type">void</span> *)kni_compat_ioctl,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">static</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">miscdevice</span> <span class="hljs-title">kni_misc</span> =</span> &#123;<br>	.minor = MISC_DYNAMIC_MINOR,<br>	.name = KNI_DEVICE,<br>	.fops = &amp;kni_fops,<br>&#125;;<br><br><span class="hljs-type">static</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">file_operations</span> <span class="hljs-title">kni_fops</span> =</span> &#123;<br>    .owner = THIS_MODULE,<br>    .open = kni_open,<br>    .release = kni_release,<br>    .unlocked_ioctl = (<span class="hljs-type">void</span> *)kni_ioctl,<br>    .compat_ioctl = (<span class="hljs-type">void</span> *)kni_compat_ioctl,<br>&#125;;<br></code></pre></td></tr></table></figure>
 
 <p>这里涉及的主要操作有kni_open，kni_release，以及kni_ioctl，分别对应几个函数。</p>
 <ul>
@@ -246,40 +316,40 @@
 <ul>
 <li>mbuf-&gt;sk_buf（收包）</li>
 </ul>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * RX: normal working mode</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="type">static</span> <span class="type">void</span></span><br><span class="line"><span class="title function_">kni_net_rx_normal</span><span class="params">(<span class="keyword">struct</span> kni_dev *kni)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">unsigned</span> ret;</span><br><span class="line">    <span class="type">uint32_t</span> len;</span><br><span class="line">    <span class="type">unsigned</span> i, num, num_rq, num_fq;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rte_kni_mbuf</span> *<span class="title">kva</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rte_kni_mbuf</span> *<span class="title">va</span>[<span class="title">MBUF_BURST_SZ</span>];</span></span><br><span class="line">    <span class="type">void</span> * data_kva;</span><br><span class="line"> </span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">sk_buff</span> *<span class="title">skb</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">net_device</span> *<span class="title">dev</span> =</span> kni-&gt;net_dev;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">/* 每次收包的个数必须为rx_q和free_q的最小值且不超过MBUF_BURST_SZ */</span></span><br><span class="line"> </span><br><span class="line">    <span class="comment">/* Get the number of entries in rx_q */</span></span><br><span class="line">    num_rq = kni_fifo_count(kni-&gt;rx_q);</span><br><span class="line"> </span><br><span class="line">    <span class="comment">/* Get the number of free entries in free_q */</span></span><br><span class="line">    num_fq = kni_fifo_free_count(kni-&gt;free_q);</span><br><span class="line"> </span><br><span class="line">    <span class="comment">/* Calculate the number of entries to dequeue in rx_q */</span></span><br><span class="line">    num = min(num_rq, num_fq);</span><br><span class="line">    num = min(num, (<span class="type">unsigned</span>)MBUF_BURST_SZ);</span><br><span class="line"> </span><br><span class="line">    <span class="comment">/* Return if no entry in rx_q and no free entry in free_q */</span></span><br><span class="line">    <span class="keyword">if</span> (num == <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">/* Burst dequeue from rx_q */</span></span><br><span class="line">    ret = kni_fifo_get(kni-&gt;rx_q, (<span class="type">void</span> **)va, num);</span><br><span class="line">    <span class="keyword">if</span> (ret == <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">return</span>; <span class="comment">/* Failing should not happen */</span></span><br><span class="line"> </span><br><span class="line">    <span class="comment">/* mbuf转换为skb */</span></span><br><span class="line">    <span class="comment">/* Transfer received packets to netif */</span></span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; num; i++) &#123;</span><br><span class="line">        <span class="comment">/* mbuf kva */</span></span><br><span class="line">        kva = (<span class="type">void</span> *)va[i] - kni-&gt;mbuf_va + kni-&gt;mbuf_kva;</span><br><span class="line">        len = kva-&gt;data_len;</span><br><span class="line">        <span class="comment">/* data kva */</span></span><br><span class="line">        data_kva = kva-&gt;data - kni-&gt;mbuf_va + kni-&gt;mbuf_kva;</span><br><span class="line"> </span><br><span class="line">        skb = dev_alloc_skb(len + <span class="number">2</span>);</span><br><span class="line">        <span class="keyword">if</span> (!skb) &#123;</span><br><span class="line">            KNI_ERR(<span class="string">&quot;Out of mem, dropping pkts\n&quot;</span>);</span><br><span class="line">            <span class="comment">/* Update statistics */</span></span><br><span class="line">            kni-&gt;stats.rx_dropped++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">/* Align IP on 16B boundary */</span></span><br><span class="line">            skb_reserve(skb, <span class="number">2</span>);</span><br><span class="line">            <span class="built_in">memcpy</span>(skb_put(skb, len), data_kva, len);</span><br><span class="line">            skb-&gt;dev = dev;</span><br><span class="line">            skb-&gt;protocol = eth_type_trans(skb, dev);</span><br><span class="line">            skb-&gt;ip_summed = CHECKSUM_UNNECESSARY;</span><br><span class="line"> </span><br><span class="line">            <span class="comment">/* 发送skb到协议栈 */</span></span><br><span class="line">            <span class="comment">/* Call netif interface */</span></span><br><span class="line">            netif_receive_skb(skb);</span><br><span class="line">            <span class="comment">/* Call netif interface */</span></span><br><span class="line">		    <span class="comment">//netif_rx_ni(skb);//dpdk18.11</span></span><br><span class="line"> </span><br><span class="line">            <span class="comment">/* Update statistics */</span></span><br><span class="line">            kni-&gt;stats.rx_bytes += len;</span><br><span class="line">            kni-&gt;stats.rx_packets++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">/* 通知用户空间释放mbuf */</span></span><br><span class="line">    <span class="comment">/* Burst enqueue mbufs into free_q */</span></span><br><span class="line">    ret = kni_fifo_put(kni-&gt;free_q, (<span class="type">void</span> **)va, num);</span><br><span class="line">    <span class="keyword">if</span> (ret != num)</span><br><span class="line">        <span class="comment">/* Failing should not happen */</span></span><br><span class="line">        KNI_ERR(<span class="string">&quot;Fail to enqueue entries into free_q\n&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">/*</span><br><span class="hljs-comment"> * RX: normal working mode</span><br><span class="hljs-comment"> */</span><br><span class="hljs-type">static</span> <span class="hljs-type">void</span><br><span class="hljs-title function_">kni_net_rx_normal</span><span class="hljs-params">(<span class="hljs-keyword">struct</span> kni_dev *kni)</span><br>&#123;<br>    <span class="hljs-type">unsigned</span> ret;<br>    <span class="hljs-type">uint32_t</span> len;<br>    <span class="hljs-type">unsigned</span> i, num, num_rq, num_fq;<br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">rte_kni_mbuf</span> *<span class="hljs-title">kva</span>;</span><br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">rte_kni_mbuf</span> *<span class="hljs-title">va</span>[<span class="hljs-title">MBUF_BURST_SZ</span>];</span><br>    <span class="hljs-type">void</span> * data_kva;<br> <br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">sk_buff</span> *<span class="hljs-title">skb</span>;</span><br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">net_device</span> *<span class="hljs-title">dev</span> =</span> kni-&gt;net_dev;<br> <br>    <span class="hljs-comment">/* 每次收包的个数必须为rx_q和free_q的最小值且不超过MBUF_BURST_SZ */</span><br> <br>    <span class="hljs-comment">/* Get the number of entries in rx_q */</span><br>    num_rq = kni_fifo_count(kni-&gt;rx_q);<br> <br>    <span class="hljs-comment">/* Get the number of free entries in free_q */</span><br>    num_fq = kni_fifo_free_count(kni-&gt;free_q);<br> <br>    <span class="hljs-comment">/* Calculate the number of entries to dequeue in rx_q */</span><br>    num = min(num_rq, num_fq);<br>    num = min(num, (<span class="hljs-type">unsigned</span>)MBUF_BURST_SZ);<br> <br>    <span class="hljs-comment">/* Return if no entry in rx_q and no free entry in free_q */</span><br>    <span class="hljs-keyword">if</span> (num == <span class="hljs-number">0</span>)<br>        <span class="hljs-keyword">return</span>;<br> <br>    <span class="hljs-comment">/* Burst dequeue from rx_q */</span><br>    ret = kni_fifo_get(kni-&gt;rx_q, (<span class="hljs-type">void</span> **)va, num);<br>    <span class="hljs-keyword">if</span> (ret == <span class="hljs-number">0</span>)<br>        <span class="hljs-keyword">return</span>; <span class="hljs-comment">/* Failing should not happen */</span><br> <br>    <span class="hljs-comment">/* mbuf转换为skb */</span><br>    <span class="hljs-comment">/* Transfer received packets to netif */</span><br>    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; num; i++) &#123;<br>        <span class="hljs-comment">/* mbuf kva */</span><br>        kva = (<span class="hljs-type">void</span> *)va[i] - kni-&gt;mbuf_va + kni-&gt;mbuf_kva;<br>        len = kva-&gt;data_len;<br>        <span class="hljs-comment">/* data kva */</span><br>        data_kva = kva-&gt;data - kni-&gt;mbuf_va + kni-&gt;mbuf_kva;<br> <br>        skb = dev_alloc_skb(len + <span class="hljs-number">2</span>);<br>        <span class="hljs-keyword">if</span> (!skb) &#123;<br>            KNI_ERR(<span class="hljs-string">&quot;Out of mem, dropping pkts\n&quot;</span>);<br>            <span class="hljs-comment">/* Update statistics */</span><br>            kni-&gt;stats.rx_dropped++;<br>        &#125;<br>        <span class="hljs-keyword">else</span> &#123;<br>            <span class="hljs-comment">/* Align IP on 16B boundary */</span><br>            skb_reserve(skb, <span class="hljs-number">2</span>);<br>            <span class="hljs-built_in">memcpy</span>(skb_put(skb, len), data_kva, len);<br>            skb-&gt;dev = dev;<br>            skb-&gt;protocol = eth_type_trans(skb, dev);<br>            skb-&gt;ip_summed = CHECKSUM_UNNECESSARY;<br> <br>            <span class="hljs-comment">/* 发送skb到协议栈 */</span><br>            <span class="hljs-comment">/* Call netif interface */</span><br>            netif_receive_skb(skb);<br>            <span class="hljs-comment">/* Call netif interface */</span><br>		    <span class="hljs-comment">//netif_rx_ni(skb);//dpdk18.11</span><br> <br>            <span class="hljs-comment">/* Update statistics */</span><br>            kni-&gt;stats.rx_bytes += len;<br>            kni-&gt;stats.rx_packets++;<br>        &#125;<br>    &#125;<br> <br>    <span class="hljs-comment">/* 通知用户空间释放mbuf */</span><br>    <span class="hljs-comment">/* Burst enqueue mbufs into free_q */</span><br>    ret = kni_fifo_put(kni-&gt;free_q, (<span class="hljs-type">void</span> **)va, num);<br>    <span class="hljs-keyword">if</span> (ret != num)<br>        <span class="hljs-comment">/* Failing should not happen */</span><br>        KNI_ERR(<span class="hljs-string">&quot;Fail to enqueue entries into free_q\n&quot;</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <ul>
 <li>sk_buf-&gt;mbuf（发包）</li>
 </ul>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="type">int</span></span><br><span class="line"><span class="title function_">kni_net_tx</span><span class="params">(<span class="keyword">struct</span> sk_buff *skb, <span class="keyword">struct</span> net_device *dev)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> len = <span class="number">0</span>;</span><br><span class="line">    <span class="type">unsigned</span> ret;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">kni_dev</span> *<span class="title">kni</span> =</span> netdev_priv(dev);</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rte_kni_mbuf</span> *<span class="title">pkt_kva</span> =</span> <span class="literal">NULL</span>;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rte_kni_mbuf</span> *<span class="title">pkt_va</span> =</span> <span class="literal">NULL</span>;</span><br><span class="line"> </span><br><span class="line">    dev-&gt;trans_start = jiffies; <span class="comment">/* save the timestamp */</span></span><br><span class="line"> </span><br><span class="line">    <span class="comment">/* Check if the length of skb is less than mbuf size */</span></span><br><span class="line">    <span class="keyword">if</span> (skb-&gt;len &gt; kni-&gt;mbuf_size)</span><br><span class="line">        <span class="keyword">goto</span> drop;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Check if it has at least one free entry in tx_q and</span></span><br><span class="line"><span class="comment">     * one entry in alloc_q.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">if</span> (kni_fifo_free_count(kni-&gt;tx_q) == <span class="number">0</span> ||</span><br><span class="line">            kni_fifo_count(kni-&gt;alloc_q) == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * If no free entry in tx_q or no entry in alloc_q,</span></span><br><span class="line"><span class="comment">         * drops skb and goes out.</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="keyword">goto</span> drop;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">/* skb转mbuf */</span></span><br><span class="line">    <span class="comment">/* dequeue a mbuf from alloc_q */</span></span><br><span class="line">    ret = kni_fifo_get(kni-&gt;alloc_q, (<span class="type">void</span> **)&amp;pkt_va, <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">if</span> (likely(ret == <span class="number">1</span>)) &#123;</span><br><span class="line">        <span class="type">void</span> *data_kva;</span><br><span class="line"> </span><br><span class="line">        pkt_kva = (<span class="type">void</span> *)pkt_va - kni-&gt;mbuf_va + kni-&gt;mbuf_kva;</span><br><span class="line">        data_kva = pkt_kva-&gt;data - kni-&gt;mbuf_va + kni-&gt;mbuf_kva;</span><br><span class="line"> </span><br><span class="line">        len = skb-&gt;len;</span><br><span class="line">        <span class="built_in">memcpy</span>(data_kva, skb-&gt;data, len);</span><br><span class="line">        <span class="keyword">if</span> (unlikely(len &lt; ETH_ZLEN)) &#123;</span><br><span class="line">            <span class="built_in">memset</span>(data_kva + len, <span class="number">0</span>, ETH_ZLEN - len);</span><br><span class="line">            len = ETH_ZLEN;</span><br><span class="line">        &#125;</span><br><span class="line">        pkt_kva-&gt;pkt_len = len;</span><br><span class="line">        pkt_kva-&gt;data_len = len;</span><br><span class="line"> </span><br><span class="line">        <span class="comment">/* enqueue mbuf into tx_q */</span></span><br><span class="line">        ret = kni_fifo_put(kni-&gt;tx_q, (<span class="type">void</span> **)&amp;pkt_va, <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">if</span> (unlikely(ret != <span class="number">1</span>)) &#123;</span><br><span class="line">            <span class="comment">/* Failing should not happen */</span></span><br><span class="line">            KNI_ERR(<span class="string">&quot;Fail to enqueue mbuf into tx_q\n&quot;</span>);</span><br><span class="line">            <span class="keyword">goto</span> drop;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">/* Failing should not happen */</span></span><br><span class="line">        KNI_ERR(<span class="string">&quot;Fail to dequeue mbuf from alloc_q\n&quot;</span>);</span><br><span class="line">        <span class="keyword">goto</span> drop;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">/* Free skb and update statistics */</span></span><br><span class="line">    dev_kfree_skb(skb);</span><br><span class="line">    kni-&gt;stats.tx_bytes += len;</span><br><span class="line">    kni-&gt;stats.tx_packets++;</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">return</span> NETDEV_TX_OK;</span><br><span class="line"> </span><br><span class="line">drop:</span><br><span class="line">    <span class="comment">/* Free skb and update statistics */</span></span><br><span class="line">    dev_kfree_skb(skb);</span><br><span class="line">    kni-&gt;stats.tx_dropped++;</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">return</span> NETDEV_TX_OK;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">static</span> <span class="hljs-type">int</span><br><span class="hljs-title function_">kni_net_tx</span><span class="hljs-params">(<span class="hljs-keyword">struct</span> sk_buff *skb, <span class="hljs-keyword">struct</span> net_device *dev)</span><br>&#123;<br>    <span class="hljs-type">int</span> len = <span class="hljs-number">0</span>;<br>    <span class="hljs-type">unsigned</span> ret;<br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">kni_dev</span> *<span class="hljs-title">kni</span> =</span> netdev_priv(dev);<br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">rte_kni_mbuf</span> *<span class="hljs-title">pkt_kva</span> =</span> <span class="hljs-literal">NULL</span>;<br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">rte_kni_mbuf</span> *<span class="hljs-title">pkt_va</span> =</span> <span class="hljs-literal">NULL</span>;<br> <br>    dev-&gt;trans_start = jiffies; <span class="hljs-comment">/* save the timestamp */</span><br> <br>    <span class="hljs-comment">/* Check if the length of skb is less than mbuf size */</span><br>    <span class="hljs-keyword">if</span> (skb-&gt;len &gt; kni-&gt;mbuf_size)<br>        <span class="hljs-keyword">goto</span> drop;<br> <br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * Check if it has at least one free entry in tx_q and</span><br><span class="hljs-comment">     * one entry in alloc_q.</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">if</span> (kni_fifo_free_count(kni-&gt;tx_q) == <span class="hljs-number">0</span> ||<br>            kni_fifo_count(kni-&gt;alloc_q) == <span class="hljs-number">0</span>) &#123;<br>        <span class="hljs-comment">/**</span><br><span class="hljs-comment">         * If no free entry in tx_q or no entry in alloc_q,</span><br><span class="hljs-comment">         * drops skb and goes out.</span><br><span class="hljs-comment">         */</span><br>        <span class="hljs-keyword">goto</span> drop;<br>    &#125;<br> <br>    <span class="hljs-comment">/* skb转mbuf */</span><br>    <span class="hljs-comment">/* dequeue a mbuf from alloc_q */</span><br>    ret = kni_fifo_get(kni-&gt;alloc_q, (<span class="hljs-type">void</span> **)&amp;pkt_va, <span class="hljs-number">1</span>);<br>    <span class="hljs-keyword">if</span> (likely(ret == <span class="hljs-number">1</span>)) &#123;<br>        <span class="hljs-type">void</span> *data_kva;<br> <br>        pkt_kva = (<span class="hljs-type">void</span> *)pkt_va - kni-&gt;mbuf_va + kni-&gt;mbuf_kva;<br>        data_kva = pkt_kva-&gt;data - kni-&gt;mbuf_va + kni-&gt;mbuf_kva;<br> <br>        len = skb-&gt;len;<br>        <span class="hljs-built_in">memcpy</span>(data_kva, skb-&gt;data, len);<br>        <span class="hljs-keyword">if</span> (unlikely(len &lt; ETH_ZLEN)) &#123;<br>            <span class="hljs-built_in">memset</span>(data_kva + len, <span class="hljs-number">0</span>, ETH_ZLEN - len);<br>            len = ETH_ZLEN;<br>        &#125;<br>        pkt_kva-&gt;pkt_len = len;<br>        pkt_kva-&gt;data_len = len;<br> <br>        <span class="hljs-comment">/* enqueue mbuf into tx_q */</span><br>        ret = kni_fifo_put(kni-&gt;tx_q, (<span class="hljs-type">void</span> **)&amp;pkt_va, <span class="hljs-number">1</span>);<br>        <span class="hljs-keyword">if</span> (unlikely(ret != <span class="hljs-number">1</span>)) &#123;<br>            <span class="hljs-comment">/* Failing should not happen */</span><br>            KNI_ERR(<span class="hljs-string">&quot;Fail to enqueue mbuf into tx_q\n&quot;</span>);<br>            <span class="hljs-keyword">goto</span> drop;<br>        &#125;<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-comment">/* Failing should not happen */</span><br>        KNI_ERR(<span class="hljs-string">&quot;Fail to dequeue mbuf from alloc_q\n&quot;</span>);<br>        <span class="hljs-keyword">goto</span> drop;<br>    &#125;<br> <br>    <span class="hljs-comment">/* Free skb and update statistics */</span><br>    dev_kfree_skb(skb);<br>    kni-&gt;stats.tx_bytes += len;<br>    kni-&gt;stats.tx_packets++;<br> <br>    <span class="hljs-keyword">return</span> NETDEV_TX_OK;<br> <br>drop:<br>    <span class="hljs-comment">/* Free skb and update statistics */</span><br>    dev_kfree_skb(skb);<br>    kni-&gt;stats.tx_dropped++;<br> <br>    <span class="hljs-keyword">return</span> NETDEV_TX_OK;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <h2 id="kni运行"><a href="#kni运行" class="headerlink" title="kni运行"></a>kni运行</h2><h3 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h3><ul>
 <li>x86</li>
 </ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">make config T=x86_64-native-linuxapp-gcc EXTRA_CFLAGS=&#x27;-g -Ofast -fPIC -ftls-model=local-dynamic&#x27;</span><br><span class="line">make T=x86_64-native-linuxapp-gcc  CONFIG_RTE_KNI_KMOD=y CONFIG_RTE_EAL_IGB_UIO=y EXTRA_CFLAGS=&#x27;-g -Ofast -fPIC -ftls-model=local-dynamic&#x27; install -j 8</span><br><span class="line">make examples T=x86_64-native-linuxapp-gcc O=x86_64-native-linuxapp-gcc -j16</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">make config T=x86_64-native-linuxapp-gcc EXTRA_CFLAGS=&#x27;-g -Ofast -fPIC -ftls-model=local-dynamic&#x27;<br>make T=x86_64-native-linuxapp-gcc  CONFIG_RTE_KNI_KMOD=y CONFIG_RTE_EAL_IGB_UIO=y EXTRA_CFLAGS=&#x27;-g -Ofast -fPIC -ftls-model=local-dynamic&#x27; install -j 8<br>make examples T=x86_64-native-linuxapp-gcc O=x86_64-native-linuxapp-gcc -j16<br></code></pre></td></tr></table></figure>
 
-<h3 id="执行"><a href="#执行" class="headerlink" title="执行"></a>执行</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">kni [EAL options] -- -p PORTMASK --config=&quot;(port,lcore_rx,lcore_tx[,lcore_kthread,...])[,(port,lcore_rx,lcore_tx[,lcore_kthread,...])]&quot; [-P] [-m]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">-p PORTMASK:</span><br><span class="line">十六进制接口掩码</span><br><span class="line">--config=&quot;(port,lcore_rx,lcore_tx[,lcore_kthread,...])[,(port,lcore_rx,lcore_tx[,lcore_kthread,...])]&quot;:</span><br><span class="line">指定对于每个物理网口，接收和发送DPDK线程绑定的核心，以及KNI内核线程绑定的核心</span><br><span class="line">-P:</span><br><span class="line">可选标志，设置的话意味着混杂模式，以便不区分以太网目的MAC地址，接收所有报文。不设置此选项，仅目的MAC地址等于接口MAC地址的报文被接收</span><br><span class="line">-m:</span><br><span class="line">可选标志。使能监控模式并更新以太网链路状态。此选项需要启动一个DPDK线程定期检查物理接口链路状态，同步相应的KNI虚拟网口状态。意味着当以太网链路down的时候，KNI虚拟接口将自动禁用，反之，自动启用。</span><br></pre></td></tr></table></figure>
+<h3 id="执行"><a href="#执行" class="headerlink" title="执行"></a>执行</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs shell">kni [EAL options] -- -p PORTMASK --config=&quot;(port,lcore_rx,lcore_tx[,lcore_kthread,...])[,(port,lcore_rx,lcore_tx[,lcore_kthread,...])]&quot; [-P] [-m]<br><br><br>-p PORTMASK:<br>十六进制接口掩码<br>--config=&quot;(port,lcore_rx,lcore_tx[,lcore_kthread,...])[,(port,lcore_rx,lcore_tx[,lcore_kthread,...])]&quot;:<br>指定对于每个物理网口，接收和发送DPDK线程绑定的核心，以及KNI内核线程绑定的核心<br>-P:<br>可选标志，设置的话意味着混杂模式，以便不区分以太网目的MAC地址，接收所有报文。不设置此选项，仅目的MAC地址等于接口MAC地址的报文被接收<br>-m:<br>可选标志。使能监控模式并更新以太网链路状态。此选项需要启动一个DPDK线程定期检查物理接口链路状态，同步相应的KNI虚拟网口状态。意味着当以太网链路down的时候，KNI虚拟接口将自动禁用，反之，自动启用。<br></code></pre></td></tr></table></figure>
 
 
 
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">rmmod rte_kni</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">insmod kmod/rte_kni.ko</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">sudo ./kni -l 0-3 -n 4 -- -P -p 0x3 -m --config=<span class="string">&quot;(0,0,1),(1,2,3)&quot;</span></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">-l 0-3 使用0-3核</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">-n 4   使用4个核</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">-p 0x3 (11)使用两个网口，port 0和port 1</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">--config=<span class="string">&quot;(0,0,1),(1,2,3)&quot;</span></span> </span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">(0,0,1) port 0 使用0核rx，1核tx</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">(1,2,3) port 1 使用2核rx，3核tx</span></span><br><span class="line">./kni -l 0-1 -n 2 -- -p 0x1 -P --config=&quot;(0,0,1)&quot;</span><br><span class="line"></span><br><span class="line">ifconfig vEth0 121.168.1.12/24</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">rmmod rte_kni</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">insmod kmod/rte_kni.ko</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">sudo ./kni -l 0-3 -n 4 -- -P -p 0x3 -m --config=<span class="hljs-string">&quot;(0,0,1),(1,2,3)&quot;</span></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">-l 0-3 使用0-3核</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">-n 4   使用4个核</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">-p 0x3 (11)使用两个网口，port 0和port 1</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">--config=<span class="hljs-string">&quot;(0,0,1),(1,2,3)&quot;</span></span> <br><span class="hljs-meta prompt_"># </span><span class="language-bash">(0,0,1) port 0 使用0核rx，1核tx</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">(1,2,3) port 1 使用2核rx，3核tx</span><br>./kni -l 0-1 -n 2 -- -p 0x1 -P --config=&quot;(0,0,1)&quot;<br><br>ifconfig vEth0 121.168.1.12/24<br></code></pre></td></tr></table></figure>
 
 <h3 id="定位追踪"><a href="#定位追踪" class="headerlink" title="定位追踪"></a>定位追踪</h3><p>在kni_net.c的kni_rx_normal中的382行添加如下代码：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pr_info(<span class="string">&quot;kni recv a packet\n&quot;</span>);</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">pr_info(<span class="hljs-string">&quot;kni recv a packet\n&quot;</span>);<br></code></pre></td></tr></table></figure>
 
 <p>使用dmesg观察输出。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RTE_LOG(INFO, APP, <span class="string">&quot;kni send %lu packets\n&quot;</span>,kni_stats[port_id].tx_packets);</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">RTE_LOG(INFO, APP, <span class="hljs-string">&quot;kni send %lu packets\n&quot;</span>,kni_stats[port_id].tx_packets);<br></code></pre></td></tr></table></figure>
 
 <h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>一端使用pktgen回放报文到kni口，分别使用大包和小包。大包使用GTPU报文或者其他TCP&#x2F;IP报文，小包使用arp报文。</p>
 <ul>
 <li>大包(包长1460)</li>
 </ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./app/x86_64-native-linuxapp-gcc/pktgen -c 0xe0000 --socket-mem 1024 -n 2 -- -P -m [18:19].0 -s 0:gtpu.pcap -T --crc-strip</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">./app/x86_64-native-linuxapp-gcc/pktgen -c 0xe0000 --socket-mem 1024 -n 2 -- -P -m [18:19].0 -s 0:gtpu.pcap -T --crc-strip<br></code></pre></td></tr></table></figure>
 
 <ul>
 <li>小包（）</li>
 </ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./app/x86_64-native-linuxapp-gcc/pktgen -c 0xe0000 --socket-mem 1024 -n 2 -- -P -m [18:19].0 -s 0:arp_request.pcap -T --crc-strip</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">./app/x86_64-native-linuxapp-gcc/pktgen -c 0xe0000 --socket-mem 1024 -n 2 -- -P -m [18:19].0 -s 0:arp_request.pcap -T --crc-strip<br></code></pre></td></tr></table></figure>
 
 <p>kni端的ip需要根据抓包报文进行修改。</p>
 <p><font color="red">10G网口大包大致可以跑到4Gbps线速，小包10G网口大致可以跑到50Mbps线速。</font></p>
@@ -291,199 +361,376 @@
 <li><a target="_blank" rel="noopener" href="https://blog.csdn.net/nanhangfengshuai/article/details/50533230">https://blog.csdn.net/nanhangfengshuai/article/details/50533230</a></li>
 </ol>
 
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/growdu.io/categories/dpdk/" class="category-chain-item">dpdk</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/growdu.io/tags/linux/">#linux</a>
+      
+        <a href="/growdu.io/tags/dpdk/">#dpdk</a>
+      
+        <a href="/growdu.io/tags/kni/">#kni</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>dpdk_kni_use</div>
+      <div>http://growdu.online/growdu.io/2022/07/26/dpdk-kni-use/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>growdu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年7月26日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/growdu.io/2022/07/27/vpp%E5%BC%80%E5%8F%91%E6%8C%87%E5%8D%97/" title="vpp开发指南">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">vpp开发指南</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/growdu.io/2022/07/26/use-code-server/" title="use-code-server">
+                        <span class="hidden-mobile">use-code-server</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
     </div>
 
-    
-    
-    
-
-      <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/growdu/growdu.io/tags/dpdk/" rel="tag"># dpdk</a>
-              <a href="/growdu/growdu.io/tags/kni/" rel="tag"># kni</a>
-              <a href="/growdu/growdu.io/tags/linux/" rel="tag"># linux</a>
-          </div>
-
-        
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
 
 
-        
-    <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/growdu/growdu.io/2022/07/26/use-code-server/" rel="prev" title="use-code-server">
-      <i class="fa fa-chevron-left"></i> use-code-server
-    </a></div>
-      <div class="post-nav-item">
-    <a href="/growdu/growdu.io/2022/07/27/vpp%E5%BC%80%E5%8F%91%E6%8C%87%E5%8D%97/" rel="next" title="vpp开发指南">
-      vpp开发指南 <i class="fa fa-chevron-right"></i>
-    </a></div>
+
+  </aside>
+
+
     </div>
-      </footer>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
     
-  </article>
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
   
   
   
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
 
 
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/growdu.io/js/events.js" ></script>
+<script  src="/growdu.io/js/plugins.js" ></script>
 
-          </div>
-          
 
-<script>
-  window.addEventListener('tabs:register', () => {
-    let { activeClass } = CONFIG.comments;
-    if (CONFIG.comments.storage) {
-      activeClass = localStorage.getItem('comments_active') || activeClass;
-    }
-    if (activeClass) {
-      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
-      if (activeTab) {
-        activeTab.click();
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
       }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/growdu.io/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
     }
-  });
-  if (CONFIG.comments.storage) {
-    window.addEventListener('tabs:click', event => {
-      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
-      let commentClass = event.target.classList[1];
-      localStorage.setItem('comments_active', commentClass);
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
     });
-  }
+  });
 </script>
 
-        </div>
-          
-  
-  <div class="toggle sidebar-toggle">
-    <span class="toggle-line toggle-line-first"></span>
-    <span class="toggle-line toggle-line-middle"></span>
-    <span class="toggle-line toggle-line-last"></span>
-  </div>
 
-  <aside class="sidebar">
-    <div class="sidebar-inner">
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
 
-      <ul class="sidebar-nav motion-element">
-        <li class="sidebar-nav-toc">
-          文章目录
-        </li>
-        <li class="sidebar-nav-overview">
-          站点概览
-        </li>
-      </ul>
+  <script>Fluid.plugins.codeWidget();</script>
 
-      <!--noindex-->
-      <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#dpdk%E4%B9%8Bkni%E4%BD%BF%E7%94%A8"><span class="nav-number">1.</span> <span class="nav-text">dpdk之kni使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFkni"><span class="nav-number">1.1.</span> <span class="nav-text">什么是kni</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#kni%E4%BC%98%E5%8A%BF"><span class="nav-number">1.1.1.</span> <span class="nav-text">kni优势</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kni%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90"><span class="nav-number">1.2.</span> <span class="nav-text">kni代码分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#dpdk-mbuf%E4%B8%8Esk-buf%E8%BD%AC%E6%8D%A2"><span class="nav-number">1.2.1.</span> <span class="nav-text">dpdk mbuf与sk_buf转换</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kni%E8%BF%90%E8%A1%8C"><span class="nav-number">1.3.</span> <span class="nav-text">kni运行</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E8%AF%91"><span class="nav-number">1.3.1.</span> <span class="nav-text">编译</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%A7%E8%A1%8C"><span class="nav-number">1.3.2.</span> <span class="nav-text">执行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E4%BD%8D%E8%BF%BD%E8%B8%AA"><span class="nav-number">1.3.3.</span> <span class="nav-text">定位追踪</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95"><span class="nav-number">1.4.</span> <span class="nav-text">测试</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#reference"><span class="nav-number">2.</span> <span class="nav-text">reference</span></a></li></ol></div>
-      </div>
-      <!--/noindex-->
-
-      <div class="site-overview-wrap sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">growdu</p>
-  <div class="site-description" itemprop="description"></div>
-</div>
-<div class="site-state-wrap motion-element">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-          <a href="/growdu/growdu.io/archives/">
-        
-          <span class="site-state-item-count">10</span>
-          <span class="site-state-item-name">日志</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">8</span>
-        <span class="site-state-item-name">分类</span>
-      </div>
-      <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">24</span>
-        <span class="site-state-item-name">标签</span>
-      </div>
-  </nav>
-</div>
-
-
-
-      </div>
-
-    </div>
-  </aside>
-  <div id="sidebar-dimmer"></div>
-
-
-      </div>
-    </main>
-
-    <footer class="footer">
-      <div class="footer-inner">
-        
-
-        
-
-<div class="copyright">
-  
-  &copy; 
-  <span itemprop="copyrightYear">2023</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">growdu</span>
-</div>
-  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
-  </div>
-
-        
-
-
-
-
-
-
-
-
-      </div>
-    </footer>
-  </div>
 
   
-  <script src="/growdu/growdu.io/lib/anime.min.js"></script>
-  <script src="/growdu/growdu.io/lib/velocity/velocity.min.js"></script>
-  <script src="/growdu/growdu.io/lib/velocity/velocity.ui.min.js"></script>
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
 
-<script src="/growdu/growdu.io/js/utils.js"></script>
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
 
-<script src="/growdu/growdu.io/js/motion.js"></script>
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
 
 
-<script src="/growdu/growdu.io/js/schemes/muse.js"></script>
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/growdu.io/js/local-search.js" ></script>
 
 
-<script src="/growdu/growdu.io/js/next-boot.js"></script>
 
 
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/growdu.io/js/boot.js" ></script>
 
 
   
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-  
-
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
 </body>
 </html>
