@@ -398,21 +398,21 @@
                     <div class="post-statis col l4 hide-on-med-and-down" data-aos="zoom-in-right">
                         
 <div class="statis">
-    <span class="count"><a href="/dblog/">10</a></span>
+    <span class="count"><a href="/dblog/">13</a></span>
     <span class="name">文章</span>
 </div>
 
 
 
 <div class="statis">
-    <span class="count"><a href="/dblog/categories">8</a></span>
+    <span class="count"><a href="/dblog/categories">10</a></span>
     <span class="name">分类</span>
 </div>
 
 
 
 <div class="statis">
-    <span class="count"><a href="/dblog/tags">24</a></span>
+    <span class="count"><a href="/dblog/tags">30</a></span>
     <span class="name">标签</span>
 </div>
 
@@ -428,21 +428,21 @@
                                 <div class="post-statis hide-on-large-only" data-aos="zoom-in-right">
                                     
 <div class="statis">
-    <span class="count"><a href="/dblog/">10</a></span>
+    <span class="count"><a href="/dblog/">13</a></span>
     <span class="name">文章</span>
 </div>
 
 
 
 <div class="statis">
-    <span class="count"><a href="/dblog/categories">8</a></span>
+    <span class="count"><a href="/dblog/categories">10</a></span>
     <span class="name">分类</span>
 </div>
 
 
 
 <div class="statis">
-    <span class="count"><a href="/dblog/tags">24</a></span>
+    <span class="count"><a href="/dblog/tags">30</a></span>
     <span class="name">标签</span>
 </div>
 
@@ -586,7 +586,7 @@
                 name: '文章篇数',
                 type: 'line',
                 color: ['#6772e5'],
-                data: [0,0,0,0,0,10,0,0,0,0,0,0,0],
+                data: [0,0,0,0,0,10,0,0,0,0,0,0,3],
                 markPoint: {
                     symbolSize: 45,
                     color: ['#fa755a','#3ecf8e','#82d3f4'],
@@ -628,7 +628,7 @@
                 type: 'pie',
                 radius: '50%',
                 color: ['#6772e5', '#ff9e0f', '#fa755a', '#3ecf8e', '#82d3f4', '#ab47bc', '#525f7f', '#f51c47', '#26A69A'],
-                data: [{"name":"docker","value":1},{"name":"dpdk","value":1},{"name":"c","value":2},{"name":"环境搭建","value":1},{"name":"vpp","value":1},{"name":"tcp","value":2},{"name":"database","value":1},{"name":"分布式","value":1}],
+                data: [{"name":"c","value":2},{"name":"docker","value":1},{"name":"dpdk","value":1},{"name":"tools","value":2},{"name":"postgresql","value":1},{"name":"tcp","value":2},{"name":"环境搭建","value":1},{"name":"vpp","value":1},{"name":"分布式","value":1},{"name":"database","value":1}],
                 itemStyle: {
                     emphasis: {
                         shadowBlur: 10,
@@ -652,7 +652,7 @@
         xAxis: [
             {
                 type: 'category',
-                data: ["linux","c","tcp","socket","docker","ipc","dpdk","kni","autoconf","make"]
+                data: ["linux","c","database","postgresql","tcp","socket","autoconf","make","docker","ipc"]
             }
         ],
         yAxis: [
@@ -665,7 +665,7 @@
                 type: 'bar',
                 color: ['#82d3f4'],
                 barWidth : 18,
-                data: [4,2,2,2,1,1,1,1,1,1],
+                data: [4,3,2,2,2,2,1,1,1,1],
                 markPoint: {
                     symbolSize: 45,
                     data: [{
@@ -849,6 +849,24 @@
         <div class="tag-chips center-align">
             
             
+            <a href="/dblog/tags/c/">
+                <span class="chip center-align waves-effect waves-light chip-default">c</span>
+            </a>
+            
+            
+            
+            <a href="/dblog/tags/autoconf/">
+                <span class="chip center-align waves-effect waves-light chip-default">autoconf</span>
+            </a>
+            
+            
+            
+            <a href="/dblog/tags/make/">
+                <span class="chip center-align waves-effect waves-light chip-default">make</span>
+            </a>
+            
+            
+            
             <a href="/dblog/tags/docker/">
                 <span class="chip center-align waves-effect waves-light chip-default">docker</span>
             </a>
@@ -875,20 +893,46 @@
             
             
             
-            <a href="/dblog/tags/c/">
-                <span class="chip center-align waves-effect waves-light chip-default">c</span>
+            <a href="/dblog/tags/note/">
+                <span class="chip center-align waves-effect waves-light chip-default">note</span>
             </a>
             
             
             
-            <a href="/dblog/tags/autoconf/">
-                <span class="chip center-align waves-effect waves-light chip-default">autoconf</span>
+            <a href="/dblog/tags/blog/">
+                <span class="chip center-align waves-effect waves-light chip-default">blog</span>
             </a>
             
             
             
-            <a href="/dblog/tags/make/">
-                <span class="chip center-align waves-effect waves-light chip-default">make</span>
+            <a href="/dblog/tags/leanote/">
+                <span class="chip center-align waves-effect waves-light chip-default">leanote</span>
+            </a>
+            
+            
+            
+            <a href="/dblog/tags/replication/">
+                <span class="chip center-align waves-effect waves-light chip-default">replication</span>
+            </a>
+            
+            
+            
+            <a href="/dblog/tags/database/">
+                <span class="chip center-align waves-effect waves-light chip-default">database</span>
+            </a>
+            
+            
+            
+            
+            
+            <a href="/dblog/tags/tcp/">
+                <span class="chip center-align waves-effect waves-light chip-default">tcp</span>
+            </a>
+            
+            
+            
+            <a href="/dblog/tags/socket/">
+                <span class="chip center-align waves-effect waves-light chip-default">socket</span>
             </a>
             
             
@@ -925,44 +969,6 @@
             
             
             
-            <a href="/dblog/tags/tcp/">
-                <span class="chip center-align waves-effect waves-light chip-default">tcp</span>
-            </a>
-            
-            
-            
-            <a href="/dblog/tags/socket/">
-                <span class="chip center-align waves-effect waves-light chip-default">socket</span>
-            </a>
-            
-            
-            
-            <a href="/dblog/tags/%E6%95%B0%E7%BB%84/">
-                <span class="chip center-align waves-effect waves-light chip-default">数组</span>
-            </a>
-            
-            
-            
-            <a href="/dblog/tags/database/">
-                <span class="chip center-align waves-effect waves-light chip-default">database</span>
-            </a>
-            
-            
-            
-            <a href="/dblog/tags/%E6%95%B0%E6%8D%AE%E5%AE%8C%E6%95%B4%E6%80%A7/">
-                <span class="chip center-align waves-effect waves-light chip-default">数据完整性</span>
-            </a>
-            
-            
-            
-            
-            
-            <a href="/dblog/tags/mysql/">
-                <span class="chip center-align waves-effect waves-light chip-default">mysql</span>
-            </a>
-            
-            
-            
             <a href="/dblog/tags/zookeeper/">
                 <span class="chip center-align waves-effect waves-light chip-default">zookeeper</span>
             </a>
@@ -977,6 +983,36 @@
             
             <a href="/dblog/tags/%E9%9B%86%E7%BE%A4/">
                 <span class="chip center-align waves-effect waves-light chip-default">集群</span>
+            </a>
+            
+            
+            
+            <a href="/dblog/tags/doxygen/">
+                <span class="chip center-align waves-effect waves-light chip-default">doxygen</span>
+            </a>
+            
+            
+            
+            <a href="/dblog/tags/document/">
+                <span class="chip center-align waves-effect waves-light chip-default">document</span>
+            </a>
+            
+            
+            
+            <a href="/dblog/tags/%E6%95%B0%E7%BB%84/">
+                <span class="chip center-align waves-effect waves-light chip-default">数组</span>
+            </a>
+            
+            
+            
+            <a href="/dblog/tags/%E6%95%B0%E6%8D%AE%E5%AE%8C%E6%95%B4%E6%80%A7/">
+                <span class="chip center-align waves-effect waves-light chip-default">数据完整性</span>
+            </a>
+            
+            
+            
+            <a href="/dblog/tags/mysql/">
+                <span class="chip center-align waves-effect waves-light chip-default">mysql</span>
             </a>
             
             
@@ -1069,7 +1105,7 @@
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">11.7k</span>
+                        class="white-color">13.8k</span>
             
             
             
