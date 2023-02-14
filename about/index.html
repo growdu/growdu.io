@@ -398,21 +398,21 @@
                     <div class="post-statis col l4 hide-on-med-and-down" data-aos="zoom-in-right">
                         
 <div class="statis">
-    <span class="count"><a href="/growdu.io/">13</a></span>
+    <span class="count"><a href="/growdu.io/">16</a></span>
     <span class="name">文章</span>
 </div>
 
 
 
 <div class="statis">
-    <span class="count"><a href="/growdu.io/categories">10</a></span>
+    <span class="count"><a href="/growdu.io/categories">11</a></span>
     <span class="name">分类</span>
 </div>
 
 
 
 <div class="statis">
-    <span class="count"><a href="/growdu.io/tags">30</a></span>
+    <span class="count"><a href="/growdu.io/tags">33</a></span>
     <span class="name">标签</span>
 </div>
 
@@ -428,21 +428,21 @@
                                 <div class="post-statis hide-on-large-only" data-aos="zoom-in-right">
                                     
 <div class="statis">
-    <span class="count"><a href="/growdu.io/">13</a></span>
+    <span class="count"><a href="/growdu.io/">16</a></span>
     <span class="name">文章</span>
 </div>
 
 
 
 <div class="statis">
-    <span class="count"><a href="/growdu.io/categories">10</a></span>
+    <span class="count"><a href="/growdu.io/categories">11</a></span>
     <span class="name">分类</span>
 </div>
 
 
 
 <div class="statis">
-    <span class="count"><a href="/growdu.io/tags">30</a></span>
+    <span class="count"><a href="/growdu.io/tags">33</a></span>
     <span class="name">标签</span>
 </div>
 
@@ -586,7 +586,7 @@
                 name: '文章篇数',
                 type: 'line',
                 color: ['#6772e5'],
-                data: [0,0,0,0,0,10,0,0,0,0,0,0,3],
+                data: [0,0,0,0,0,5,4,0,0,0,0,0,7],
                 markPoint: {
                     symbolSize: 45,
                     color: ['#fa755a','#3ecf8e','#82d3f4'],
@@ -628,7 +628,7 @@
                 type: 'pie',
                 radius: '50%',
                 color: ['#6772e5', '#ff9e0f', '#fa755a', '#3ecf8e', '#82d3f4', '#ab47bc', '#525f7f', '#f51c47', '#26A69A'],
-                data: [{"name":"docker","value":1},{"name":"c","value":2},{"name":"dpdk","value":1},{"name":"tools","value":2},{"name":"postgresql","value":1},{"name":"环境搭建","value":1},{"name":"tcp","value":2},{"name":"vpp","value":1},{"name":"分布式","value":1},{"name":"database","value":1}],
+                data: [{"name":"c","value":2},{"name":"docker","value":1},{"name":"dpdk","value":1},{"name":"tools","value":2},{"name":"postgresql","value":2},{"name":"tcp","value":2},{"name":"环境搭建","value":1},{"name":"vpp","value":1},{"name":"分布式","value":3},{"name":"database","value":1},{"name":"database","value":2}],
                 itemStyle: {
                     emphasis: {
                         shadowBlur: 10,
@@ -652,7 +652,7 @@
         xAxis: [
             {
                 type: 'category',
-                data: ["linux","c","database","postgresql","tcp","socket","docker","ipc","autoconf","make"]
+                data: ["linux","c","database","postgresql","分布式","tcp","socket","zookeeper","集群","autoconf"]
             }
         ],
         yAxis: [
@@ -665,7 +665,7 @@
                 type: 'bar',
                 color: ['#82d3f4'],
                 barWidth : 18,
-                data: [4,3,2,2,2,2,1,1,1,1],
+                data: [4,3,3,3,3,2,2,2,2,1],
                 markPoint: {
                     symbolSize: 45,
                     data: [{
@@ -849,24 +849,6 @@
         <div class="tag-chips center-align">
             
             
-            <a href="/growdu.io/tags/docker/">
-                <span class="chip center-align waves-effect waves-light chip-default">docker</span>
-            </a>
-            
-            
-            
-            <a href="/growdu.io/tags/ipc/">
-                <span class="chip center-align waves-effect waves-light chip-default">ipc</span>
-            </a>
-            
-            
-            
-            <a href="/growdu.io/tags/linux/">
-                <span class="chip center-align waves-effect waves-light chip-default">linux</span>
-            </a>
-            
-            
-            
             <a href="/growdu.io/tags/c/">
                 <span class="chip center-align waves-effect waves-light chip-default">c</span>
             </a>
@@ -881,6 +863,24 @@
             
             <a href="/growdu.io/tags/make/">
                 <span class="chip center-align waves-effect waves-light chip-default">make</span>
+            </a>
+            
+            
+            
+            <a href="/growdu.io/tags/docker/">
+                <span class="chip center-align waves-effect waves-light chip-default">docker</span>
+            </a>
+            
+            
+            
+            <a href="/growdu.io/tags/ipc/">
+                <span class="chip center-align waves-effect waves-light chip-default">ipc</span>
+            </a>
+            
+            
+            
+            <a href="/growdu.io/tags/linux/">
+                <span class="chip center-align waves-effect waves-light chip-default">linux</span>
             </a>
             
             
@@ -911,17 +911,29 @@
             
             
             
+            <a href="/growdu.io/tags/database/">
+                <span class="chip center-align waves-effect waves-light chip-default">database</span>
+            </a>
+            
+            
+            
+            
+            
             <a href="/growdu.io/tags/replication/">
                 <span class="chip center-align waves-effect waves-light chip-default">replication</span>
             </a>
             
             
             
-            <a href="/growdu.io/tags/database/">
-                <span class="chip center-align waves-effect waves-light chip-default">database</span>
+            <a href="/growdu.io/tags/tcp/">
+                <span class="chip center-align waves-effect waves-light chip-default">tcp</span>
             </a>
             
             
+            
+            <a href="/growdu.io/tags/socket/">
+                <span class="chip center-align waves-effect waves-light chip-default">socket</span>
+            </a>
             
             
             
@@ -945,18 +957,6 @@
             
             <a href="/growdu.io/tags/github/">
                 <span class="chip center-align waves-effect waves-light chip-default">github</span>
-            </a>
-            
-            
-            
-            <a href="/growdu.io/tags/tcp/">
-                <span class="chip center-align waves-effect waves-light chip-default">tcp</span>
-            </a>
-            
-            
-            
-            <a href="/growdu.io/tags/socket/">
-                <span class="chip center-align waves-effect waves-light chip-default">socket</span>
             </a>
             
             
@@ -999,6 +999,26 @@
             
             
             
+            <a href="/growdu.io/tags/totem/">
+                <span class="chip center-align waves-effect waves-light chip-default">totem</span>
+            </a>
+            
+            
+            
+            <a href="/growdu.io/tags/raft/">
+                <span class="chip center-align waves-effect waves-light chip-default">raft</span>
+            </a>
+            
+            
+            
+            <a href="/growdu.io/tags/%E6%95%B0%E7%BB%84/">
+                <span class="chip center-align waves-effect waves-light chip-default">数组</span>
+            </a>
+            
+            
+            
+            
+            
             <a href="/growdu.io/tags/%E6%95%B0%E6%8D%AE%E5%AE%8C%E6%95%B4%E6%80%A7/">
                 <span class="chip center-align waves-effect waves-light chip-default">数据完整性</span>
             </a>
@@ -1007,12 +1027,6 @@
             
             <a href="/growdu.io/tags/mysql/">
                 <span class="chip center-align waves-effect waves-light chip-default">mysql</span>
-            </a>
-            
-            
-            
-            <a href="/growdu.io/tags/%E6%95%B0%E7%BB%84/">
-                <span class="chip center-align waves-effect waves-light chip-default">数组</span>
             </a>
             
             
@@ -1105,7 +1119,7 @@
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">13.8k</span>
+                        class="white-color">18.2k</span>
             
             
             

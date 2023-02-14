@@ -366,16 +366,16 @@ postgresql使用wal日志保存数据操作记录，再通过操作wal日志">
                     
                     <div class="article-tag">
                         
-                            <a href="/growdu.io/tags/replication/">
-                                <span class="chip bg-color">replication</span>
-                            </a>
-                        
                             <a href="/growdu.io/tags/database/">
                                 <span class="chip bg-color">database</span>
                             </a>
                         
                             <a href="/growdu.io/tags/postgresql/">
                                 <span class="chip bg-color">postgresql</span>
+                            </a>
+                        
+                            <a href="/growdu.io/tags/replication/">
+                                <span class="chip bg-color">replication</span>
                             </a>
                         
                     </div>
@@ -388,6 +388,10 @@ postgresql使用wal日志保存数据操作记录，再通过操作wal日志">
                         
                             <a href="/growdu.io/categories/postgresql/" class="post-category">
                                 postgresql
+                            </a>
+                        
+                            <a href="/growdu.io/categories/postgresql/database/" class="post-category">
+                                database
                             </a>
                         
                     </div>
@@ -408,7 +412,7 @@ postgresql使用wal日志保存数据操作记录，再通过操作wal日志">
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    291
+                    539
                 </div>
                 
 
@@ -457,9 +461,19 @@ postgresql使用wal日志保存数据操作记录，再通过操作wal日志">
 <li>数据接收机制（walreceiver）</li>
 <li>数据确认机制（自定义协议）</li>
 <li>tcp配置参数（心跳等）</li>
-<li>数据库恢复机制（如何将wal日志变成数据）</li>
+<li>数据恢复机制（如何将wal日志变成数据）</li>
 <li>进度跟踪机制（状态、进度等）</li>
 </ul>
+<h2 id="wal日志"><a href="#wal日志" class="headerlink" title="wal日志"></a>wal日志</h2><blockquote>
+<p>PostgreSQL在执行数据修改操作时，修改的数据在写入磁盘之前首先要将修改的内容写入wal日志文件，这样就不必时时的将共享缓存中的数据文件刷新到磁盘中，当数据库发生崩溃我们可以从wal日志获取共享缓存中未写入到磁盘的数据。这样做的目的是以顺序写入的wal代替随机的数据写入，以获取更高的执行效率。</p>
+</blockquote>
+<blockquote>
+<p>目前的高性能磁盘，顺序写速度可以达到600MB&#x2F;s， 超过了一般网卡的传输速度。但是磁盘随机写的速度只有大概100KB&#x2F;s，和顺序写的性能相差6000倍。</p>
+</blockquote>
+<h2 id="数据发送机制（walsender）"><a href="#数据发送机制（walsender）" class="headerlink" title="数据发送机制（walsender）"></a>数据发送机制（walsender）</h2><h3 id="数据接收机制（walreceiver）"><a href="#数据接收机制（walreceiver）" class="headerlink" title="数据接收机制（walreceiver）"></a>数据接收机制（walreceiver）</h3><h2 id="数据确认机制（自定义协议）"><a href="#数据确认机制（自定义协议）" class="headerlink" title="数据确认机制（自定义协议）"></a>数据确认机制（自定义协议）</h2><h2 id="tcp配置参数（心跳）"><a href="#tcp配置参数（心跳）" class="headerlink" title="tcp配置参数（心跳）"></a>tcp配置参数（心跳）</h2><h2 id="数据恢复机制"><a href="#数据恢复机制" class="headerlink" title="数据恢复机制"></a>数据恢复机制</h2><h2 id="进度跟踪机制"><a href="#进度跟踪机制" class="headerlink" title="进度跟踪机制"></a>进度跟踪机制</h2><h2 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/163245243">https://zhuanlan.zhihu.com/p/163245243</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.51cto.com/u_15076236/4148373">https://blog.51cto.com/u_15076236/4148373</a></li>
+</ol>
 
                 
             </div>
@@ -524,16 +538,16 @@ postgresql使用wal日志保存数据操作记录，再通过操作wal日志">
                     
                         <div class="article-tag">
                             
-                                <a href="/growdu.io/tags/replication/">
-                                    <span class="chip bg-color">replication</span>
-                                </a>
-                            
                                 <a href="/growdu.io/tags/database/">
                                     <span class="chip bg-color">database</span>
                                 </a>
                             
                                 <a href="/growdu.io/tags/postgresql/">
                                     <span class="chip bg-color">postgresql</span>
+                                </a>
+                            
+                                <a href="/growdu.io/tags/replication/">
+                                    <span class="chip bg-color">replication</span>
                                 </a>
                             
                         </div>
@@ -879,18 +893,17 @@ postgresql使用wal日志保存数据操作记录，再通过操作wal日志">
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="far fa-dot-circle"></i>&nbsp;本篇
-            </div>
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/growdu.io/2023/02/13/postgresql-liu-fu-zhi-xiang-jie/">
+                <a href="/growdu.io/2023/02/13/postgresql-guan-jian-gai-nian-li-jie/">
                     <div class="card-image">
                         
                         
-                        <img src="/growdu.io/medias/featureimages/22.jpg" class="responsive-img" alt="一文读懂流复制（postgresql流复制详解）">
+                        <img src="/growdu.io/medias/featureimages/7.jpg" class="responsive-img" alt="postgresql关键概念理解">
                         
-                        <span class="card-title">一文读懂流复制（postgresql流复制详解）</span>
+                        <span class="card-title">postgresql关键概念理解</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -900,9 +913,9 @@ postgresql使用wal日志保存数据操作记录，再通过操作wal日志">
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-02-13
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2023-02-13
+                        </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -911,17 +924,16 @@ postgresql使用wal日志保存数据操作记录，再通过操作wal日志">
                                     postgresql
                                 </a>
                             
+                            <a href="/growdu.io/categories/postgresql/database/" class="post-category">
+                                    database
+                                </a>
+                            
                             
                         </span>
                     </div>
                 </div>
-
                 
                 <div class="card-action article-tags">
-                    
-                    <a href="/growdu.io/tags/replication/">
-                        <span class="chip bg-color">replication</span>
-                    </a>
                     
                     <a href="/growdu.io/tags/database/">
                         <span class="chip bg-color">database</span>
@@ -1183,7 +1195,7 @@ postgresql使用wal日志保存数据操作记录，再通过操作wal日志">
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">13.8k</span>
+                        class="white-color">18.2k</span>
             
             
             

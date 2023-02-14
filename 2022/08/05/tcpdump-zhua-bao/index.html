@@ -4,10 +4,15 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="autoconf使用, growdu&#39;s blog">
-    <meta name="description" content="autoconf使用简介
-Autoconf是一个用于生成shell脚本的工具，可自动配置源码包以适应多种类Posix的系统,产生的配置脚本通常叫做configure。Autoconf的目标是为每个用户提供可移植的配置。
-Autoconf解决">
+    <meta name="keywords" content="tcpdump抓包, growdu&#39;s blog">
+    <meta name="description" content="抓包进阶抓包命令tcpdump -i eth1 -vvv -w test.pcap
+# -i 指定网口
+# -vvv 在shell中显示抓到的包
+# -w 将抓到的包写入文件
+
+
+指定主机名
+tcpdump -i eth1 host www">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -19,7 +24,7 @@ Autoconf解决">
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>autoconf使用 | growdu&#39;s blog</title>
+    <title>tcpdump抓包 | growdu&#39;s blog</title>
     <link rel="icon" type="image/png" href="/growdu.io/favicon.png">
     
 
@@ -336,12 +341,12 @@ Autoconf解决">
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/growdu.io/medias/featureimages/12.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/growdu.io/medias/featureimages/7.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">autoconf使用</h1>
+                    <h1 class="description center-align post-title">tcpdump抓包</h1>
                 </div>
             </div>
         </div>
@@ -365,16 +370,16 @@ Autoconf解决">
                     
                     <div class="article-tag">
                         
-                            <a href="/growdu.io/tags/c/">
-                                <span class="chip bg-color">c</span>
+                            <a href="/growdu.io/tags/linux/">
+                                <span class="chip bg-color">linux</span>
                             </a>
                         
-                            <a href="/growdu.io/tags/autoconf/">
-                                <span class="chip bg-color">autoconf</span>
+                            <a href="/growdu.io/tags/tcp/">
+                                <span class="chip bg-color">tcp</span>
                             </a>
                         
-                            <a href="/growdu.io/tags/make/">
-                                <span class="chip bg-color">make</span>
+                            <a href="/growdu.io/tags/socket/">
+                                <span class="chip bg-color">socket</span>
                             </a>
                         
                     </div>
@@ -385,8 +390,8 @@ Autoconf解决">
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/growdu.io/categories/c/" class="post-category">
-                                c
+                            <a href="/growdu.io/categories/tcp/" class="post-category">
+                                tcp
                             </a>
                         
                     </div>
@@ -398,7 +403,7 @@ Autoconf解决">
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-07-29
+                    2022-08-05
                 </div>
                 
 
@@ -407,14 +412,14 @@ Autoconf解决">
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.2k
+                    859
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    4 分
+                    3 分
                 </div>
                 
 
@@ -437,135 +442,102 @@ Autoconf解决">
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="autoconf使用"><a href="#autoconf使用" class="headerlink" title="autoconf使用"></a>autoconf使用</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><blockquote>
-<p>Autoconf是一个用于生成shell脚本的工具，可自动配置源码包以适应多种类Posix的系统,产生的配置脚本通常叫做configure。Autoconf的目标是为每个用户提供可移植的配置。</p>
-<p>Autoconf解决了一个重要的问题 - 可靠地发现系统特定的构建和运行时信息。为此，GNU项目开发了一套集成实用程序来完成Autoconf的工作：GNU构建系统，其最重要的组件是Autoconf，Automake和Libtool。</p>
-<p>使用以下命令来安装我们需要的组件：</p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> <span class="token function">apt-get</span> <span class="token function">install</span> autoconf automake libtool<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-</blockquote>
-<blockquote>
-<p>使用automake,程序开发人员只需要写一些简单的 含有预定义宏的 文件,由autoconf根据一个宏文件生成configure,由automake根据另一个宏文件生成Makefile.in,再使用configure依据Makefile.in来生成一个符合惯例的 Makefile.</p>
-</blockquote>
-<p>使用autoconf的最终目的是生成能够根据不同系统生成Makefile的configure文件，一般情况下我们需要准备如下内容：</p>
-<ol>
-<li>源码</li>
-<li>configure.ac</li>
-<li>Makefile.am</li>
-</ol>
-<p>然后通过如下一系列命令可以生成configure文件：</p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">aclocal<span class="token punctuation">;</span> autoconf<span class="token punctuation">;</span> autoheadr<span class="token punctuation">;</span>automake --add-missing<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p>在test目录下有一个main.c文件，其内容如下：</p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">ha@ha-virtual-machine:~/test$ <span class="token function">ls</span>
-main.c
-ha@ha-virtual-machine:~/test$ <span class="token function">cat</span> main.c
-<span class="token comment">#include &lt;stdio.h></span>
-
-int <span class="token function-name function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-        printf<span class="token punctuation">(</span><span class="token string">"This is src<span class="token entity" title="\n">\n</span>"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token builtin class-name">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>我们使用autoconf来对其进行编译构建。</p>
-<ol>
-<li><p>使用autoscan扫描当前目录，生成configure.scan文件；可以看到当前目录结构如下：</p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">ha@ha-virtual-machine:~/test$ autoscan
-ha@ha-virtual-machine:~/test$ <span class="token function">ls</span>
-autoscan.log  configure.scan  main.c
-ha@ha-virtual-machine:~/test$ <span class="token function">cat</span> configure.scan
-<span class="token comment">#                                               -*- Autoconf -*-</span>
-<span class="token comment"># Process this file with autoconf to produce a configure script.</span>
-
-AC_PREREQ<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">2.71</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-AC_INIT<span class="token punctuation">(</span><span class="token punctuation">[</span>FULL-PACKAGE-NAME<span class="token punctuation">]</span>, <span class="token punctuation">[</span>VERSION<span class="token punctuation">]</span>, <span class="token punctuation">[</span>BUG-REPORT-ADDRESS<span class="token punctuation">]</span><span class="token punctuation">)</span>
-AC_CONFIG_SRCDIR<span class="token punctuation">(</span><span class="token punctuation">[</span>main.c<span class="token punctuation">]</span><span class="token punctuation">)</span>
-AC_CONFIG_HEADERS<span class="token punctuation">(</span><span class="token punctuation">[</span>config.h<span class="token punctuation">]</span><span class="token punctuation">)</span>
-
-<span class="token comment"># Checks for programs.</span>
-AC_PROG_CC
-
-<span class="token comment"># Checks for libraries.</span>
-
-<span class="token comment"># Checks for header files.</span>
-
-<span class="token comment"># Checks for typedefs, structures, and compiler characteristics.</span>
-
-<span class="token comment"># Checks for library functions.</span>
-
-AC_OUTPUT<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+                <h1 id="抓包进阶"><a href="#抓包进阶" class="headerlink" title="抓包进阶"></a>抓包进阶</h1><h2 id="抓包命令"><a href="#抓包命令" class="headerlink" title="抓包命令"></a>抓包命令</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">tcpdump <span class="token parameter variable">-i</span> eth1 <span class="token parameter variable">-vvv</span> <span class="token parameter variable">-w</span> test.pcap
+<span class="token comment"># -i 指定网口</span>
+<span class="token comment"># -vvv 在shell中显示抓到的包</span>
+<span class="token comment"># -w 将抓到的包写入文件</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
 <ul>
-<li><p>AC_PREREQ声明本文件要求的 autoconf 版本。</p>
+<li><p>指定主机名</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">tcpdump <span class="token parameter variable">-i</span> eth1 <span class="token function">host</span> www.baidu.com<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 </li>
-<li><p>AC_INIT 宏用来定义软件的名称和版本等信息，本例写成:AC_INIT(Hello, 1.0)</p>
+<li><p>指定ip</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">tcpdump <span class="token parameter variable">-i</span> eth1 <span class="token function">host</span> <span class="token number">192.168</span>.1.12<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 </li>
-<li><p>这里省略了 BUG-REPORT-ADDRESS 参数，它是可选项，一般写成作者的邮件地址</p>
+<li><p>指定端口</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">tcpdump <span class="token parameter variable">-i</span> eth1 port <span class="token number">80</span>
+<span class="token comment"># 指定源端口</span>
+tcpdump <span class="token parameter variable">-i</span> eth1 src port <span class="token number">80</span>
+<span class="token comment"># 指定目的端口</span>
+tcpdump <span class="token parameter variable">-i</span> eth1 dst port <span class="token number">80</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 </li>
-<li><p>AC_CONFIG_SRCDIR 宏通过侦测所指定的源码文件是否存在，来确定源码目录的有效性。可以选择源码目录中的任何一个文件作为代表, 宏参数中使用 &#96;[ ]’，是为了表明其中的字符串是一个整体。</p>
+<li><p>指定协议</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 对于传输层之上的协议需加port</span>
+tcpdump <span class="token parameter variable">-i</span> eth1 port http<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 </li>
-<li><p>AC_CONFIG_HEADER 宏用于生成 config.h 文件，里面存放 configure 脚本侦测到的信息如果程序需要使用其中的定义，就在源码中加入#include &lt;config.h&gt;</p>
+<li><p>指定icmp</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># ping打包</span>
+<span class="token function">ping</span> <span class="token parameter variable">-s</span> <span class="token number">4800</span> <span class="token function">ip</span>
+<span class="token comment"># 抓取ping包</span>
+<span class="token comment"># 传输层及传输层之下的协议直接跟协议名</span>
+tcpdump <span class="token parameter variable">-i</span> eth1 icmp<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 </li>
-<li><p>其他的一些宏是标准的侦测过程，可以保留不动修改configure.scan为configure.ac，同时修改项目编译相关内容；</p>
-</li>
+<li><p>当需要长时间抓包时，为避免单个抓包文件过大导致打开查询缓慢，可设置当个抓包文件大小</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 指定单个抓包文件大小为100M，超过100M会保存在新文件中</span>
+tcpdump <span class="token parameter variable">-i</span> eth1 <span class="token parameter variable">-C</span> 100M <span class="token parameter variable">-w</span> test.pcap<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></li>
 </ul>
-</li>
-<li><p>将configure.scan重命名为configure.ac，然后修改其内容，仅需添加AM_INIT_AUTOMAKE(1.0)；</p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">#                                               -*- Autoconf -*-</span>
-<span class="token comment"># Process this file with autoconf to produce a configure script.</span>
+<h2 id="拆分包"><a href="#拆分包" class="headerlink" title="拆分包"></a>拆分包</h2><p>当单个文件报文个数过多时，打开和查询报文缓慢。可以使用wireshark相关工具对其进行拆分。</p>
+<p>进入wireshark的安装目录，可以看到有一个editcap的程序。</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># -c 指定多少个包拆分为一个文件， src待拆分的包文件路径及文件名，dst是拆分后的文件路径及文件名</span>
+editcap.exe <span class="token parameter variable">-c</span> <span class="token number">200000</span> src dst<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
-AC_PREREQ<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">2.71</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-AC_INIT<span class="token punctuation">(</span><span class="token punctuation">[</span>FULL-PACKAGE-NAME<span class="token punctuation">]</span>, <span class="token punctuation">[</span>VERSION<span class="token punctuation">]</span>, <span class="token punctuation">[</span>BUG-REPORT-ADDRESS<span class="token punctuation">]</span><span class="token punctuation">)</span>
-AM_INIT_AUTOMAKE<span class="token punctuation">(</span><span class="token number">1.0</span><span class="token punctuation">)</span>
-AC_CONFIG_SRCDIR<span class="token punctuation">(</span><span class="token punctuation">[</span>main.c<span class="token punctuation">]</span><span class="token punctuation">)</span>
-AC_CONFIG_HEADERS<span class="token punctuation">(</span><span class="token punctuation">[</span>config.h<span class="token punctuation">]</span><span class="token punctuation">)</span>
+<h2 id="合并包"><a href="#合并包" class="headerlink" title="合并包"></a>合并包</h2><p>Mergecap 从名字上 可以看出该命令的功能是合并多个报文为一个报文。</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">C:<span class="token punctuation">\</span>Program Files<span class="token punctuation">\</span>Wireshark<span class="token operator">></span>mergecap <span class="token parameter variable">-h</span>
+Mergecap <span class="token punctuation">(</span>Wireshark<span class="token punctuation">)</span> <span class="token number">3.4</span>.2 <span class="token punctuation">(</span>v3.4.2-0-ga889cf1b1bf9<span class="token punctuation">)</span>
+Merge two or <span class="token function">more</span> capture files into one.
+See https://www.wireshark.org <span class="token keyword">for</span> <span class="token function">more</span> information.
 
-<span class="token comment"># Checks for programs.</span>
-AC_PROG_CC
+Usage: mergecap <span class="token punctuation">[</span>options<span class="token punctuation">]</span> <span class="token parameter variable">-w</span> <span class="token operator">&lt;</span>outfile<span class="token operator">>|</span>- <span class="token operator">&lt;</span>infile<span class="token operator">></span> <span class="token punctuation">[</span><span class="token operator">&lt;</span>infile<span class="token operator">></span> <span class="token punctuation">..</span>.<span class="token punctuation">]</span>
 
-<span class="token comment"># Checks for libraries.</span>
+Output:
+  <span class="token parameter variable">-a</span>                concatenate rather than merge files.
+                    default is to merge based on frame timestamps.
+  <span class="token parameter variable">-s</span> <span class="token operator">&lt;</span>snaplen<span class="token operator">></span>      truncate packets to <span class="token operator">&lt;</span>snaplen<span class="token operator">></span> bytes of data.
+  <span class="token parameter variable">-w</span> <span class="token operator">&lt;</span>outfile<span class="token operator">>|</span>-    <span class="token builtin class-name">set</span> the output filename to <span class="token operator">&lt;</span>outfile<span class="token operator">></span> or <span class="token string">'-'</span> <span class="token keyword">for</span> stdout.
+  <span class="token parameter variable">-F</span> <span class="token operator">&lt;</span>capture type<span class="token operator">></span> <span class="token builtin class-name">set</span> the output <span class="token function">file</span> <span class="token builtin class-name">type</span><span class="token punctuation">;</span> default is pcapng.
+                    an empty <span class="token string">"-F"</span> option will list the <span class="token function">file</span> types.
+  <span class="token parameter variable">-I</span> <span class="token operator">&lt;</span>IDB merge mode<span class="token operator">></span> <span class="token builtin class-name">set</span> the merge mode <span class="token keyword">for</span> Interface Description Blocks<span class="token punctuation">;</span> default is <span class="token string">'all'</span><span class="token builtin class-name">.</span>
+                    an empty <span class="token string">"-I"</span> option will list the merge modes.
 
-<span class="token comment"># Checks for header files.</span>
+Miscellaneous:
+  <span class="token parameter variable">-h</span>                display this <span class="token builtin class-name">help</span> and exit.
+  <span class="token parameter variable">-v</span>                verbose output.<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<span class="token comment"># Checks for typedefs, structures, and compiler characteristics.</span>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">mergecap <span class="token parameter variable">-v</span> <span class="token parameter variable">-a</span> <span class="token parameter variable">-F</span> pcap <span class="token parameter variable">-w</span> test.pcap
+mergecap <span class="token parameter variable">-v</span> <span class="token parameter variable">-a</span> userip-1.pcap userip-2.pcap <span class="token parameter variable">-F</span> pcap <span class="token parameter variable">-w</span> merge_out.pcap
+    -v参数表示打印每一片报文的编号，报文较多的话会打屏。
+    -a参数表示的是按照文件中顺序将报文进行合并，默认情况是按照时间戳的顺序进行合并。由于每一片报文头部都是由有时间戳信息的，不明白的可以查看这里。
+    -F表示文件的存储格式，例如pcap,pcapng等等。在-F后面参数为空的情况下，会列出该命令支持的所有文件格式，对照选择即可。
+    -w即文件输出的<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<span class="token comment"># Checks for library functions.</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="合并一定比例的包"><a href="#合并一定比例的包" class="headerlink" title="合并一定比例的包"></a>合并一定比例的包</h2><p>使用python脚本构造固定比例的包，如1:1024等。</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> os
+
+base_file <span class="token operator">=</span> <span class="token string">"5gc.pcap"</span>
+arp_file <span class="token operator">=</span> <span class="token string">"arp_request.pcap"</span>
+ratio <span class="token operator">=</span> <span class="token number">0</span>
+dst_file <span class="token operator">=</span> <span class="token string">""</span>
+pwd <span class="token operator">=</span> os<span class="token punctuation">.</span>curdir
+<span class="token keyword">for</span> num <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    ratio <span class="token operator">=</span> <span class="token builtin">pow</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span>num<span class="token punctuation">)</span>
+    copy_file <span class="token operator">=</span> <span class="token string">"5gc_copy_"</span> <span class="token operator">+</span> <span class="token builtin">str</span><span class="token punctuation">(</span>num<span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">".pcap"</span>
+    os<span class="token punctuation">.</span>system<span class="token punctuation">(</span><span class="token string">'copy %s %s'</span> <span class="token operator">%</span> <span class="token punctuation">(</span>base_file<span class="token punctuation">,</span> copy_file<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    dst_file <span class="token operator">=</span> <span class="token string">"5gc_"</span> <span class="token operator">+</span> <span class="token builtin">str</span><span class="token punctuation">(</span>ratio<span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">".pcap"</span>
+    os<span class="token punctuation">.</span>system<span class="token punctuation">(</span><span class="token string">"mergecap.exe -v -a %s %s -F pcap -w %s"</span> <span class="token operator">%</span> <span class="token punctuation">(</span>base_file<span class="token punctuation">,</span> copy_file<span class="token punctuation">,</span> dst_file<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    base_file <span class="token operator">=</span> dst_file
+    dst_arp_file <span class="token operator">=</span> <span class="token string">"5gc_arp_1_"</span> <span class="token operator">+</span> <span class="token builtin">str</span><span class="token punctuation">(</span>ratio<span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">".pcap"</span>
+    os<span class="token punctuation">.</span>system<span class="token punctuation">(</span><span class="token string">"mergecap.exe -v -a %s %s -F pcap -w %s"</span> <span class="token operator">%</span> <span class="token punctuation">(</span>base_file<span class="token punctuation">,</span> arp_file<span class="token punctuation">,</span> dst_arp_file<span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="查询包"><a href="#查询包" class="headerlink" title="查询包"></a>查询包</h2><p>一般获取抓包文件后，需要使用wireshark对包进行查询和分析。常见的查询命令如下：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">tcp <span class="token comment"># 过滤tcp报文</span>
+ip.addr <span class="token operator">==</span> <span class="token number">127.0</span>.0.1 <span class="token comment"># 根据ip地址过滤</span>
+tcp.flags.reset <span class="token operator">==</span> <span class="token number">1</span> <span class="token comment"># 过滤reset报文</span>
+tcp.port <span class="token operator">==</span> <span class="token number">8080</span> <span class="token comment"># 根据端口过滤</span>
+tcp.len <span class="token operator">></span> <span class="token number">0</span> <span class="token comment"># 根据tcp数据长度过滤</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
-</li>
-<li><p>执行aclocal；</p>
-<blockquote>
-<p>autoconf 是 用来生成自动配置软件源代码脚本（configure）的 工具.configure脚本能独立于autoconf运行,且在 运行的 过程中,不需要用户的 干预.<br>要生成configure文件,你必须告诉autoconf如何找到你所用的 宏.方式是 使用aclocal程序来生成你的 aclocal.m4.</p>
-<p>aclocal根据configure.in文件的 内容,自动生成aclocal.m4文件.aclocal是 一个perl 脚本程序,它的 定义是 ：”aclocal - create aclocal.m4 by scanning configure.ac”.</p>
-</blockquote>
-</li>
-<li><p>执行autoconf生成configure；</p>
-<blockquote>
-<p>autoconf从configure.in这个列举编译软件时所需要各种参数的 模板文件中创建configure.<br>autoconf需要GNU m4宏处理器来处理aclocal.m4,生成configure脚本.<br>m4是 一个宏处理器.将输入拷贝到输出,同时将宏展开.宏可以是 内嵌的 ,也可以是 用户定义的 .除了可以展开宏,m4还有一些内建的 函数,用来引用文件,执行命令,整数运算,文本操作,循环等.m4既可以作为编译器的 前端,也可以单独作为一个宏处理器.</p>
-</blockquote>
-</li>
-<li><p>执行autoheader生成config.h.in；</p>
-</li>
-<li><p>将编译规则写入Makfile.am；</p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token assign-left variable">AUTOMAKE_OPTIONS</span><span class="token operator">=</span>foreign
-<span class="token assign-left variable">bin_PROGRAMS</span><span class="token operator">=</span>test
-<span class="token assign-left variable">test_SOURCES</span><span class="token operator">=</span>main.c<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
-
-</li>
-<li><p>执行automake生成Makefile.in;</p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">automake --add-missing<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<blockquote>
-<p>automake会根据你写的 Makefile.am来自动生成Makefile.in.<br>Makefile.am中定义的 宏和目标,会指导automake生成指定的 代码.例如,宏bin_PROGRAMS将导致编译和连接的 目标被生成.</p>
-</blockquote>
-</li>
-<li><p>最终当你执行configure时会根据Makefile.in生成Makefile；</p>
-</li>
-</ol>
-<h1 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h1><ol>
-<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_22660775/article/details/88975529">https://blog.csdn.net/qq_22660775/article/details/88975529</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.laruence.com/2009/11/18/1154.htmls">https://www.laruence.com/2009/11/18/1154.htmls</a></li>
-</ol>
+<h1 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h1><p>1.<a target="_blank" rel="noopener" href="https://www.freesion.com/article/9386244731/">https://www.freesion.com/article/9386244731/</a></p>
 
                 
             </div>
@@ -592,7 +564,7 @@ AC_PROG_CC
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://growdu.online/growdu.io/growdu.io/2022/07/29/autoconf-shi-yong/">http://growdu.online/growdu.io/growdu.io/2022/07/29/autoconf-shi-yong/</a>
+                    <a href="http://growdu.online/growdu.io/growdu.io/2022/08/05/tcpdump-zhua-bao/">http://growdu.online/growdu.io/growdu.io/2022/08/05/tcpdump-zhua-bao/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -630,16 +602,16 @@ AC_PROG_CC
                     
                         <div class="article-tag">
                             
-                                <a href="/growdu.io/tags/c/">
-                                    <span class="chip bg-color">c</span>
+                                <a href="/growdu.io/tags/linux/">
+                                    <span class="chip bg-color">linux</span>
                                 </a>
                             
-                                <a href="/growdu.io/tags/autoconf/">
-                                    <span class="chip bg-color">autoconf</span>
+                                <a href="/growdu.io/tags/tcp/">
+                                    <span class="chip bg-color">tcp</span>
                                 </a>
                             
-                                <a href="/growdu.io/tags/make/">
-                                    <span class="chip bg-color">make</span>
+                                <a href="/growdu.io/tags/socket/">
+                                    <span class="chip bg-color">socket</span>
                                 </a>
                             
                         </div>
@@ -989,13 +961,13 @@ AC_PROG_CC
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/growdu.io/2022/07/29/bian-chang-shu-zu-rou-xing-shu-zu/">
+                <a href="/growdu.io/2022/08/07/use-code-server/">
                     <div class="card-image">
                         
                         
-                        <img src="/growdu.io/medias/featureimages/3.jpg" class="responsive-img" alt="变长数组（柔性数组）">
+                        <img src="/growdu.io/medias/featureimages/5.jpg" class="responsive-img" alt="use-code-server">
                         
-                        <span class="card-title">变长数组（柔性数组）</span>
+                        <span class="card-title">use-code-server</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -1006,14 +978,14 @@ AC_PROG_CC
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-07-29
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-08-07
                         </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/growdu.io/categories/c/" class="post-category">
-                                    c
+                            <a href="/growdu.io/categories/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" class="post-category">
+                                    环境搭建
                                 </a>
                             
                             
@@ -1023,12 +995,20 @@ AC_PROG_CC
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/growdu.io/tags/c/">
-                        <span class="chip bg-color">c</span>
+                    <a href="/growdu.io/tags/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">
+                        <span class="chip bg-color">环境搭建</span>
                     </a>
                     
-                    <a href="/growdu.io/tags/%E6%95%B0%E7%BB%84/">
-                        <span class="chip bg-color">数组</span>
+                    <a href="/growdu.io/tags/node/">
+                        <span class="chip bg-color">node</span>
+                    </a>
+                    
+                    <a href="/growdu.io/tags/git/">
+                        <span class="chip bg-color">git</span>
+                    </a>
+                    
+                    <a href="/growdu.io/tags/github/">
+                        <span class="chip bg-color">github</span>
                     </a>
                     
                 </div>
@@ -1042,13 +1022,13 @@ AC_PROG_CC
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/growdu.io/2022/07/29/zookeeper-zhu-bei-ji-qun-demo/">
+                <a href="/growdu.io/2022/08/03/docker-yu-su-zhu-ji-gong-xiang-nei-cun-tong-xin/">
                     <div class="card-image">
                         
                         
-                        <img src="/growdu.io/medias/featureimages/23.jpg" class="responsive-img" alt="zookeeper主备集群demo">
+                        <img src="/growdu.io/medias/featureimages/4.jpg" class="responsive-img" alt="docker与宿主机共享内存通信">
                         
-                        <span class="card-title">zookeeper主备集群demo</span>
+                        <span class="card-title">docker与宿主机共享内存通信</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -1059,14 +1039,14 @@ AC_PROG_CC
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-07-29
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-08-03
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/growdu.io/categories/%E5%88%86%E5%B8%83%E5%BC%8F/" class="post-category">
-                                    分布式
+                            <a href="/growdu.io/categories/docker/" class="post-category">
+                                    docker
                                 </a>
                             
                             
@@ -1076,16 +1056,16 @@ AC_PROG_CC
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/growdu.io/tags/zookeeper/">
-                        <span class="chip bg-color">zookeeper</span>
+                    <a href="/growdu.io/tags/docker/">
+                        <span class="chip bg-color">docker</span>
                     </a>
                     
-                    <a href="/growdu.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F/">
-                        <span class="chip bg-color">分布式</span>
+                    <a href="/growdu.io/tags/ipc/">
+                        <span class="chip bg-color">ipc</span>
                     </a>
                     
-                    <a href="/growdu.io/tags/%E9%9B%86%E7%BE%A4/">
-                        <span class="chip bg-color">集群</span>
+                    <a href="/growdu.io/tags/linux/">
+                        <span class="chip bg-color">linux</span>
                     </a>
                     
                 </div>
@@ -1283,7 +1263,7 @@ AC_PROG_CC
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">13.8k</span>
+                        class="white-color">18.2k</span>
             
             
             
