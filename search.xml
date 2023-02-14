@@ -75,8 +75,6 @@
           
           <category> postgresql </category>
           
-          <category> database </category>
-          
       </categories>
       
       
@@ -103,8 +101,6 @@
       <categories>
           
           <category> postgresql </category>
-          
-          <category> database </category>
           
       </categories>
       
